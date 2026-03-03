@@ -1,6 +1,6 @@
-#include "RHI/RHIBuffer.h"
+#include "Renderer/RHI/RHIBuffer.h"
 
-#include "RHI/OpenGL/OpenGLBuffer.h"
+#include <utility>
 
 namespace Axiom
 {
@@ -98,15 +98,5 @@ namespace Axiom
             offset += element.Size;
             m_Stride += element.Size;
         }
-    }
-
-    std::unique_ptr<RHIVertexBuffer> RHIVertexBuffer::Create(const float* vertices, uint32_t size)
-    {
-        return std::make_unique<OpenGLVertexBuffer>(vertices, size);
-    }
-
-    std::unique_ptr<RHIIndexBuffer> RHIIndexBuffer::Create(const uint32_t* indices, uint32_t count)
-    {
-        return std::make_unique<OpenGLIndexBuffer>(indices, count);
     }
 }

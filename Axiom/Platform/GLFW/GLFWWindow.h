@@ -20,6 +20,7 @@ namespace Axiom
     private:
         void Init(const WindowProps& props);
         void Shutdown();
+        void SetVSync(bool enabled);
 
         GLFWwindow* m_Window = nullptr;
 
@@ -29,6 +30,7 @@ namespace Axiom
             uint32_t Width = 0;
             uint32_t Height = 0;
             EventCallbackFn EventCallback;
+            bool VSync = false;
         };
 
         WindowData m_Data;

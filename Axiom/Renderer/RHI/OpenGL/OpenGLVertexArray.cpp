@@ -1,9 +1,12 @@
-#include "RHI/OpenGL/OpenGLVertexArray.h"
+#include "Renderer/RHI/OpenGL/OpenGLVertexArray.h"
 
-#include "RHI/RHIBuffer.h"
+#include "Renderer/RHI/RHI.h"
+#include "Renderer/RHI/RHIBuffer.h"
 
 #include <glad/glad.h>
+
 #include <cstdint>
+#include <memory>
 
 namespace Axiom
 {
@@ -64,6 +67,18 @@ namespace Axiom
                 default: return 0;
             }
         }
+    }
+
+    std::unique_ptr<RHIVertexArray> RHIVertexArray::Create()
+    {
+        switch (RHI::GetAPIType())
+        {
+            case RendererAPIType::OpenGL:
+                return std::make_unique<OpenGLVertexArray>();
+            case RendererAPIType::None:
+                return nullptr;
+        }
+        return nullptr;
     }
 
     OpenGLVertexArray::OpenGLVertexArray()

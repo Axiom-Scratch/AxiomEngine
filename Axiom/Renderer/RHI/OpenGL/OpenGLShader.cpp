@@ -1,10 +1,13 @@
-#include "RHI/OpenGL/OpenGLShader.h"
+#include "Renderer/RHI/OpenGL/OpenGLShader.h"
+
+#include "Renderer/RHI/RHI.h"
 
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
 #include <cstdio>
 #include <cstdlib>
+#include <memory>
 
 namespace Axiom
 {
@@ -32,6 +35,18 @@ namespace Axiom
 
             return shader;
         }
+    }
+
+    std::unique_ptr<RHIShader> RHIShader::Create(const std::string& vertexSource, const std::string& fragmentSource)
+    {
+        switch (RHI::GetAPIType())
+        {
+            case RendererAPIType::OpenGL:
+                return std::make_unique<OpenGLShader>(vertexSource, fragmentSource);
+            case RendererAPIType::None:
+                return nullptr;
+        }
+        return nullptr;
     }
 
     OpenGLShader::OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource)
@@ -86,6 +101,18 @@ namespace Axiom
     {
         const int location = GetUniformLocation(name);
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+    }
+
+    void OpenGLShader::SetVec4(const std::string& name, const glm::vec4& value)
+    {
+        const int location = GetUniformLocation(name);
+        glUniform4fv(location, 1, glm::value_ptr(value));
+    }
+
+    void OpenGLShader::SetInt(const std::string& name, int value)
+    {
+        const int location = GetUniformLocation(name);
+        glUniform1i(location, value);
     }
 
     int OpenGLShader::GetUniformLocation(const std::string& name) const

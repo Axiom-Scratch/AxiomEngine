@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RHI/RHIShader.h"
+#include "Renderer/RHI/RHIShader.h"
 
 #include <cstdint>
 #include <unordered_map>
@@ -16,6 +16,8 @@ namespace Axiom
         void Bind() const override;
         void Unbind() const override;
         void SetMat4(const std::string& name, const glm::mat4& value) override;
+        void SetVec4(const std::string& name, const glm::vec4& value) override;
+        void SetInt(const std::string& name, int value) override;
 
     private:
         int GetUniformLocation(const std::string& name) const;

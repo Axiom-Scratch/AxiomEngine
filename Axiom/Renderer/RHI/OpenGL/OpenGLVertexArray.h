@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RHI/RHIVertexArray.h"
+#include "Renderer/RHI/RHIVertexArray.h"
 
 #include <cstdint>
 

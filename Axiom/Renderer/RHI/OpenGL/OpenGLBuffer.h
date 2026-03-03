@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RHI/RHIBuffer.h"
+#include "Renderer/RHI/RHIBuffer.h"
 
 namespace Axiom
 {
@@ -12,8 +12,6 @@ namespace Axiom
 
         void Bind() const override;
         void Unbind() const override;
-
-        [[nodiscard]] uint32_t GetRendererID() const;
 
     private:
         uint32_t m_RendererID = 0;
@@ -28,7 +26,6 @@ namespace Axiom
         void Bind() const override;
         void Unbind() const override;
         [[nodiscard]] uint32_t GetCount() const override;
-        [[nodiscard]] uint32_t GetRendererID() const;
 
     private:
         uint32_t m_RendererID = 0;

@@ -4,6 +4,7 @@
 #include "Event/Event.h"
 #include "Input/Input.h"
 #include "Platform/GLFW/GLFWInput.h"
+#include "Renderer/RenderCommand.h"
 
 #include <GLFW/glfw3.h>
 
@@ -122,6 +123,8 @@ namespace Axiom
             std::abort();
         }
 
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+
         m_Data.Title = props.Title;
         m_Data.Width = props.Width;
         m_Data.Height = props.Height;
@@ -136,6 +139,7 @@ namespace Axiom
 
         glfwMakeContextCurrent(m_Window);
         glfwSetWindowUserPointer(m_Window, &m_Data);
+        SetVSync(true);
 
         Input::Initialize(std::make_unique<GLFWInput>(m_Window));
 
@@ -174,6 +178,14 @@ namespace Axiom
                 KeyReleasedEvent event(*mapped);
                 data.EventCallback(event);
             }
+        });
+
+        glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
+        {
+            auto& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+            data.Width = static_cast<uint32_t>(width);
+            data.Height = static_cast<uint32_t>(height);
+            RenderCommand::SetViewport(0, 0, static_cast<uint32_t>(width), static_cast<uint32_t>(height));
         });
 
         glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos)
@@ -215,6 +227,12 @@ namespace Axiom
             m_Window = nullptr;
         }
         glfwTerminate();
+    }
+
+    void GLFWWindow::SetVSync(bool enabled)
+    {
+        glfwSwapInterval(enabled ? 1 : 0);
+        m_Data.VSync = enabled;
     }
 
     void GLFWWindow::OnUpdate()

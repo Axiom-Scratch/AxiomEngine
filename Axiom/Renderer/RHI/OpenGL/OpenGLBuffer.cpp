@@ -1,9 +1,37 @@
-#include "RHI/OpenGL/OpenGLBuffer.h"
+#include "Renderer/RHI/OpenGL/OpenGLBuffer.h"
+
+#include "Renderer/RHI/RHI.h"
 
 #include <glad/glad.h>
 
+#include <memory>
+
 namespace Axiom
 {
+    std::unique_ptr<RHIVertexBuffer> RHIVertexBuffer::Create(const float* vertices, uint32_t size)
+    {
+        switch (RHI::GetAPIType())
+        {
+            case RendererAPIType::OpenGL:
+                return std::make_unique<OpenGLVertexBuffer>(vertices, size);
+            case RendererAPIType::None:
+                return nullptr;
+        }
+        return nullptr;
+    }
+
+    std::unique_ptr<RHIIndexBuffer> RHIIndexBuffer::Create(const uint32_t* indices, uint32_t count)
+    {
+        switch (RHI::GetAPIType())
+        {
+            case RendererAPIType::OpenGL:
+                return std::make_unique<OpenGLIndexBuffer>(indices, count);
+            case RendererAPIType::None:
+                return nullptr;
+        }
+        return nullptr;
+    }
+
     OpenGLVertexBuffer::OpenGLVertexBuffer(const float* vertices, uint32_t size)
     {
         glGenBuffers(1, &m_RendererID);
@@ -24,11 +52,6 @@ namespace Axiom
     void OpenGLVertexBuffer::Unbind() const
     {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-    }
-
-    uint32_t OpenGLVertexBuffer::GetRendererID() const
-    {
-        return m_RendererID;
     }
 
     OpenGLIndexBuffer::OpenGLIndexBuffer(const uint32_t* indices, uint32_t count)
@@ -57,10 +80,5 @@ namespace Axiom
     uint32_t OpenGLIndexBuffer::GetCount() const
     {
         return m_Count;
-    }
-
-    uint32_t OpenGLIndexBuffer::GetRendererID() const
-    {
-        return m_RendererID;
     }
 }
