@@ -1,0 +1,79 @@
+{
+  "board": {
+    "width": 6,
+    "height": 6
+  },
+  "victory": {
+    "score_target": 30,
+    "turn_limit": 12,
+    "tie_break_order": [
+      "score",
+      "remaining_board_value",
+      "seeded_coin_flip"
+    ]
+  },
+  "energy": {
+    "per_turn_gain": 5,
+    "carryover_cap": 3
+  },
+  "costs": {
+    "default_move": 1,
+    "default_deploy": 3
+  },
+  "cards": {
+    "deck_size": 20,
+    "max_copies": 3,
+    "opening_hand": 3,
+    "hand_cap": 7,
+    "mulligan": {
+      "enabled": true,
+      "uses": 1,
+      "mode": "full_redraw"
+    }
+  },
+  "rewards": {
+    "post_battle_mode": "pick_one_of_three"
+  },
+  "triggers": {
+    "energy_cost_whitelist": [
+      "on_deploy",
+      "on_capture",
+      "on_destroyed"
+    ]
+  },
+  "placement": {
+    "preset": "classic_6x6_standard",
+    "player_back_rank": [
+      "rook",
+      "knight",
+      "bishop",
+      "queen",
+      "avatar_core",
+      "bishop"
+    ],
+    "player_front_rank": [
+      "pawn",
+      "pawn",
+      "pawn",
+      "pawn",
+      "pawn",
+      "pawn"
+    ],
+    "opponent_back_rank": [
+      "rook",
+      "knight",
+      "bishop",
+      "queen",
+      "avatar_core",
+      "bishop"
+    ],
+    "opponent_front_rank": [
+      "pawn",
+      "pawn",
+      "pawn",
+      "pawn",
+      "pawn",
+      "pawn"
+    ]
+  }
+}

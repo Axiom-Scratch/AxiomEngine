@@ -15,11 +15,12 @@ namespace Axiom
 #version 330 core
 layout(location = 0) in vec3 a_Position;
 
-uniform mat4 u_MVP;
+uniform mat4 u_ViewProjection;
+uniform mat4 u_Model;
 
 void main()
 {
-    gl_Position = u_MVP * vec4(a_Position, 1.0);
+    gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);
 }
 )";
 
@@ -46,8 +47,13 @@ void main()
 
     void SceneRenderer::BeginScene(const Camera& camera)
     {
-        m_FrameData.ViewProjection = camera.GetProjectionMatrix() * camera.GetViewMatrix();
-        RenderCommand::Clear(Math::Vec4(0.08f, 0.08f, 0.1f, 1.0f));
+        BeginScene(camera.GetProjectionMatrix() * camera.GetViewMatrix());
+    }
+
+    void SceneRenderer::BeginScene(const Math::Mat4& viewProjection)
+    {
+        m_FrameData.ViewProjection = viewProjection;
+        RenderCommand::Clear(Math::Vec4(0.1f, 0.1f, 0.15f, 1.0f));
     }
 
     void SceneRenderer::Submit(const std::shared_ptr<Mesh>& mesh,
@@ -60,7 +66,8 @@ void main()
         }
 
         material->Bind();
-        material->SetMat4("u_MVP", m_FrameData.ViewProjection * transform);
+        material->SetMat4("u_ViewProjection", m_FrameData.ViewProjection);
+        material->SetMat4("u_Model", transform);
         mesh->Draw();
     }
 

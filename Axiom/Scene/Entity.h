@@ -26,6 +26,8 @@ namespace Axiom
         void RemoveComponent();
 
         operator bool() const;
+        bool operator==(const Entity& other) const;
+        bool operator!=(const Entity& other) const;
 
     private:
         friend class Scene;

@@ -1,0 +1,3086 @@
+{
+  "metadata": {
+    "title": "Starter Piece Library",
+    "version": "1.0.0",
+    "description": "Starter movement chassis, tag library, and sample pieces for a card-driven chess-variant tactics game.",
+    "coordinate_system": {
+      "x_positive": "right",
+      "y_positive": "forward_relative_to_owner",
+      "relative_forward_definition": "Positive Y is always forward from the owning player's perspective."
+    },
+    "board_defaults": {
+      "width": 8,
+      "height": 8
+    }
+  },
+  "movement_chassis": [
+    {
+      "id": "king",
+      "name": "King / Mann",
+      "family": "stepper",
+      "description": "One square in any direction.",
+      "move_patterns": [
+        {
+          "id": "king_move",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 },
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "king_capture",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 },
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": false
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["orthodox", "stepper"]
+    },
+    {
+      "id": "queen",
+      "name": "Queen",
+      "family": "compound",
+      "description": "Orthogonal and diagonal rider.",
+      "move_patterns": [
+        {
+          "id": "queen_move",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 },
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "queen_capture",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 },
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["orthodox", "compound", "rider"]
+    },
+    {
+      "id": "rook",
+      "name": "Rook",
+      "family": "rider",
+      "description": "Orthogonal rider.",
+      "move_patterns": [
+        {
+          "id": "rook_move",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "rook_capture",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["orthodox", "rider"]
+    },
+    {
+      "id": "bishop",
+      "name": "Bishop",
+      "family": "rider",
+      "description": "Diagonal rider.",
+      "move_patterns": [
+        {
+          "id": "bishop_move",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "bishop_capture",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["orthodox", "rider"]
+    },
+    {
+      "id": "knight",
+      "name": "Knight",
+      "family": "leaper",
+      "description": "Standard (2,1) leaper.",
+      "move_patterns": [
+        {
+          "id": "knight_move",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 1, "dy": 2 },
+            { "dx": -1, "dy": 2 },
+            { "dx": 1, "dy": -2 },
+            { "dx": -1, "dy": -2 },
+            { "dx": 2, "dy": 1 },
+            { "dx": -2, "dy": 1 },
+            { "dx": 2, "dy": -1 },
+            { "dx": -2, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true,
+            "require_clear_path": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "knight_capture",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 1, "dy": 2 },
+            { "dx": -1, "dy": 2 },
+            { "dx": 1, "dy": -2 },
+            { "dx": -1, "dy": -2 },
+            { "dx": 2, "dy": 1 },
+            { "dx": -2, "dy": 1 },
+            { "dx": 2, "dy": -1 },
+            { "dx": -2, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true,
+            "require_clear_path": false
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["orthodox", "leaper"]
+    },
+    {
+      "id": "pawn",
+      "name": "Pawn",
+      "family": "divergent",
+      "description": "Moves forward one, captures forward diagonally one.",
+      "move_patterns": [
+        {
+          "id": "pawn_move",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 0, "dy": 1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "pawn_capture",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": false
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["orthodox", "divergent", "forward_only"]
+    },
+    {
+      "id": "reverse_pawn",
+      "name": "Reverse Pawn",
+      "family": "divergent",
+      "description": "Moves one step toward home, captures diagonally toward home.",
+      "move_patterns": [
+        {
+          "id": "reverse_pawn_move",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "reverse_pawn_capture",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": false
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["spy", "divergent", "reverse_forward"]
+    },
+    {
+      "id": "checker_man",
+      "name": "Checker Man",
+      "family": "divergent",
+      "description": "Moves one diagonal forward, captures by forward jump.",
+      "move_patterns": [
+        {
+          "id": "checker_man_move",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "checker_man_capture",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 2, "dy": 2 },
+            { "dx": -2, "dy": 2 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true,
+            "required_hurdles": 1,
+            "must_land_immediately_after_hurdle": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["checkers", "divergent", "forward_only"]
+    },
+    {
+      "id": "checker_king",
+      "name": "Checker King",
+      "family": "divergent",
+      "description": "Moves one diagonal any direction, captures by diagonal jump.",
+      "move_patterns": [
+        {
+          "id": "checker_king_move",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "checker_king_capture",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 2, "dy": 2 },
+            { "dx": -2, "dy": 2 },
+            { "dx": 2, "dy": -2 },
+            { "dx": -2, "dy": -2 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true,
+            "required_hurdles": 1,
+            "must_land_immediately_after_hurdle": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["checkers", "divergent"]
+    },
+    {
+      "id": "wazir",
+      "name": "Wazir",
+      "family": "stepper",
+      "description": "One orthogonal step.",
+      "move_patterns": [
+        {
+          "id": "wazir_move",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "wazir_capture",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["fairy", "stepper"]
+    },
+    {
+      "id": "ferz",
+      "name": "Ferz",
+      "family": "stepper",
+      "description": "One diagonal step.",
+      "move_patterns": [
+        {
+          "id": "ferz_move",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "ferz_capture",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["fairy", "stepper"]
+    },
+    {
+      "id": "dabbaba",
+      "name": "Dabbaba",
+      "family": "leaper",
+      "description": "A (2,0) orthogonal leaper.",
+      "move_patterns": [
+        {
+          "id": "dabbaba_move",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 2, "dy": 0 },
+            { "dx": -2, "dy": 0 },
+            { "dx": 0, "dy": 2 },
+            { "dx": 0, "dy": -2 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "dabbaba_capture",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 2, "dy": 0 },
+            { "dx": -2, "dy": 0 },
+            { "dx": 0, "dy": 2 },
+            { "dx": 0, "dy": -2 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["fairy", "leaper"]
+    },
+    {
+      "id": "alfil",
+      "name": "Alfil",
+      "family": "leaper",
+      "description": "A (2,2) diagonal leaper.",
+      "move_patterns": [
+        {
+          "id": "alfil_move",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 2, "dy": 2 },
+            { "dx": -2, "dy": 2 },
+            { "dx": 2, "dy": -2 },
+            { "dx": -2, "dy": -2 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "alfil_capture",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 2, "dy": 2 },
+            { "dx": -2, "dy": 2 },
+            { "dx": 2, "dy": -2 },
+            { "dx": -2, "dy": -2 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["fairy", "leaper"]
+    },
+    {
+      "id": "camel",
+      "name": "Camel",
+      "family": "leaper",
+      "description": "A (3,1) leaper.",
+      "move_patterns": [
+        {
+          "id": "camel_move",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 1, "dy": 3 },
+            { "dx": -1, "dy": 3 },
+            { "dx": 1, "dy": -3 },
+            { "dx": -1, "dy": -3 },
+            { "dx": 3, "dy": 1 },
+            { "dx": -3, "dy": 1 },
+            { "dx": 3, "dy": -1 },
+            { "dx": -3, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "camel_capture",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 1, "dy": 3 },
+            { "dx": -1, "dy": 3 },
+            { "dx": 1, "dy": -3 },
+            { "dx": -1, "dy": -3 },
+            { "dx": 3, "dy": 1 },
+            { "dx": -3, "dy": 1 },
+            { "dx": 3, "dy": -1 },
+            { "dx": -3, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["fairy", "leaper"]
+    },
+    {
+      "id": "zebra",
+      "name": "Zebra",
+      "family": "leaper",
+      "description": "A (3,2) leaper.",
+      "move_patterns": [
+        {
+          "id": "zebra_move",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 2, "dy": 3 },
+            { "dx": -2, "dy": 3 },
+            { "dx": 2, "dy": -3 },
+            { "dx": -2, "dy": -3 },
+            { "dx": 3, "dy": 2 },
+            { "dx": -3, "dy": 2 },
+            { "dx": 3, "dy": -2 },
+            { "dx": -3, "dy": -2 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "zebra_capture",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 2, "dy": 3 },
+            { "dx": -2, "dy": 3 },
+            { "dx": 2, "dy": -3 },
+            { "dx": -2, "dy": -3 },
+            { "dx": 3, "dy": 2 },
+            { "dx": -3, "dy": 2 },
+            { "dx": 3, "dy": -2 },
+            { "dx": -3, "dy": -2 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["fairy", "leaper"]
+    },
+    {
+      "id": "giraffe",
+      "name": "Giraffe",
+      "family": "leaper",
+      "description": "A (4,1) long skew leaper.",
+      "move_patterns": [
+        {
+          "id": "giraffe_move",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 1, "dy": 4 },
+            { "dx": -1, "dy": 4 },
+            { "dx": 1, "dy": -4 },
+            { "dx": -1, "dy": -4 },
+            { "dx": 4, "dy": 1 },
+            { "dx": -4, "dy": 1 },
+            { "dx": 4, "dy": -1 },
+            { "dx": -4, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "giraffe_capture",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 1, "dy": 4 },
+            { "dx": -1, "dy": 4 },
+            { "dx": 1, "dy": -4 },
+            { "dx": -1, "dy": -4 },
+            { "dx": 4, "dy": 1 },
+            { "dx": -4, "dy": 1 },
+            { "dx": 4, "dy": -1 },
+            { "dx": -4, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["fairy", "leaper"]
+    },
+    {
+      "id": "nightrider",
+      "name": "Nightrider",
+      "family": "serial",
+      "description": "Repeats knight steps in the same direction.",
+      "move_patterns": [
+        {
+          "id": "nightrider_move",
+          "pattern_type": "serial",
+          "vectors": [
+            { "dx": 1, "dy": 2 },
+            { "dx": -1, "dy": 2 },
+            { "dx": 1, "dy": -2 },
+            { "dx": -1, "dy": -2 },
+            { "dx": 2, "dy": 1 },
+            { "dx": -2, "dy": 1 },
+            { "dx": 2, "dy": -1 },
+            { "dx": -2, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": true,
+            "intermediate_landing_squares_must_be_clear": true,
+            "must_continue_same_direction": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          },
+          "special_flags": [
+            "successive_knight_landings_must_be_clear"
+          ]
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "nightrider_capture",
+          "pattern_type": "serial",
+          "vectors": [
+            { "dx": 1, "dy": 2 },
+            { "dx": -1, "dy": 2 },
+            { "dx": 1, "dy": -2 },
+            { "dx": -1, "dy": -2 },
+            { "dx": 2, "dy": 1 },
+            { "dx": -2, "dy": 1 },
+            { "dx": 2, "dy": -1 },
+            { "dx": -2, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": true,
+            "intermediate_landing_squares_must_be_clear": true,
+            "must_continue_same_direction": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          },
+          "special_flags": [
+            "successive_knight_landings_must_be_clear"
+          ]
+        }
+      ],
+      "keywords": ["fairy", "serial"]
+    },
+    {
+      "id": "lance",
+      "name": "Lance",
+      "family": "directional",
+      "description": "Forward-only rider.",
+      "move_patterns": [
+        {
+          "id": "lance_move",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 0, "dy": 1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "lance_capture",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 0, "dy": 1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["shogi", "forward_only", "rider"]
+    },
+    {
+      "id": "cannon",
+      "name": "Cannon",
+      "family": "divergent",
+      "description": "Moves like a rook. Captures like a rook but requires exactly one screen.",
+      "move_patterns": [
+        {
+          "id": "cannon_move",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "cannon_capture",
+          "pattern_type": "hopper",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "required_hurdles": 1,
+            "max_hurdles": 1
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["xiangqi", "hopper", "divergent"]
+    },
+    {
+      "id": "grasshopper",
+      "name": "Grasshopper",
+      "family": "hopper",
+      "description": "Moves along queen lines, must hop one hurdle, lands immediately beyond it.",
+      "move_patterns": [
+        {
+          "id": "grasshopper_move",
+          "pattern_type": "hopper",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 },
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "required_hurdles": 1,
+            "max_hurdles": 1,
+            "must_land_immediately_after_hurdle": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "grasshopper_capture",
+          "pattern_type": "hopper",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 },
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "required_hurdles": 1,
+            "max_hurdles": 1,
+            "must_land_immediately_after_hurdle": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["fairy", "hopper"]
+    },
+    {
+      "id": "xiangqi_horse",
+      "name": "Xiangqi Horse",
+      "family": "hybrid",
+      "description": "Knight-like mover blocked by an adjacent orthogonal leg square.",
+      "move_patterns": [
+        {
+          "id": "xiangqi_horse_move",
+          "pattern_type": "leap",
+          "vector_rules": [
+            {
+              "final_vector": { "dx": 1, "dy": 2 },
+              "required_clear_vectors": [{ "dx": 0, "dy": 1 }]
+            },
+            {
+              "final_vector": { "dx": -1, "dy": 2 },
+              "required_clear_vectors": [{ "dx": 0, "dy": 1 }]
+            },
+            {
+              "final_vector": { "dx": 1, "dy": -2 },
+              "required_clear_vectors": [{ "dx": 0, "dy": -1 }]
+            },
+            {
+              "final_vector": { "dx": -1, "dy": -2 },
+              "required_clear_vectors": [{ "dx": 0, "dy": -1 }]
+            },
+            {
+              "final_vector": { "dx": 2, "dy": 1 },
+              "required_clear_vectors": [{ "dx": 1, "dy": 0 }]
+            },
+            {
+              "final_vector": { "dx": -2, "dy": 1 },
+              "required_clear_vectors": [{ "dx": -1, "dy": 0 }]
+            },
+            {
+              "final_vector": { "dx": 2, "dy": -1 },
+              "required_clear_vectors": [{ "dx": 1, "dy": 0 }]
+            },
+            {
+              "final_vector": { "dx": -2, "dy": -1 },
+              "required_clear_vectors": [{ "dx": -1, "dy": 0 }]
+            }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "xiangqi_horse_capture",
+          "pattern_type": "leap",
+          "vector_rules": [
+            {
+              "final_vector": { "dx": 1, "dy": 2 },
+              "required_clear_vectors": [{ "dx": 0, "dy": 1 }]
+            },
+            {
+              "final_vector": { "dx": -1, "dy": 2 },
+              "required_clear_vectors": [{ "dx": 0, "dy": 1 }]
+            },
+            {
+              "final_vector": { "dx": 1, "dy": -2 },
+              "required_clear_vectors": [{ "dx": 0, "dy": -1 }]
+            },
+            {
+              "final_vector": { "dx": -1, "dy": -2 },
+              "required_clear_vectors": [{ "dx": 0, "dy": -1 }]
+            },
+            {
+              "final_vector": { "dx": 2, "dy": 1 },
+              "required_clear_vectors": [{ "dx": 1, "dy": 0 }]
+            },
+            {
+              "final_vector": { "dx": -2, "dy": 1 },
+              "required_clear_vectors": [{ "dx": -1, "dy": 0 }]
+            },
+            {
+              "final_vector": { "dx": 2, "dy": -1 },
+              "required_clear_vectors": [{ "dx": 1, "dy": 0 }]
+            },
+            {
+              "final_vector": { "dx": -2, "dy": -1 },
+              "required_clear_vectors": [{ "dx": -1, "dy": 0 }]
+            }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["xiangqi", "blockable_leaper"]
+    },
+    {
+      "id": "xiangqi_elephant",
+      "name": "Xiangqi Elephant",
+      "family": "zone_based",
+      "description": "A blocked (2,2) mover that often cannot cross the center line.",
+      "move_patterns": [
+        {
+          "id": "xiangqi_elephant_move",
+          "pattern_type": "leap",
+          "vector_rules": [
+            {
+              "final_vector": { "dx": 2, "dy": 2 },
+              "required_clear_vectors": [{ "dx": 1, "dy": 1 }]
+            },
+            {
+              "final_vector": { "dx": -2, "dy": 2 },
+              "required_clear_vectors": [{ "dx": -1, "dy": 1 }]
+            },
+            {
+              "final_vector": { "dx": 2, "dy": -2 },
+              "required_clear_vectors": [{ "dx": 1, "dy": -1 }]
+            },
+            {
+              "final_vector": { "dx": -2, "dy": -2 },
+              "required_clear_vectors": [{ "dx": -1, "dy": -1 }]
+            }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "zone_filters": [
+            "cannot_cross_center_line"
+          ],
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "xiangqi_elephant_capture",
+          "pattern_type": "leap",
+          "vector_rules": [
+            {
+              "final_vector": { "dx": 2, "dy": 2 },
+              "required_clear_vectors": [{ "dx": 1, "dy": 1 }]
+            },
+            {
+              "final_vector": { "dx": -2, "dy": 2 },
+              "required_clear_vectors": [{ "dx": -1, "dy": 1 }]
+            },
+            {
+              "final_vector": { "dx": 2, "dy": -2 },
+              "required_clear_vectors": [{ "dx": 1, "dy": -1 }]
+            },
+            {
+              "final_vector": { "dx": -2, "dy": -2 },
+              "required_clear_vectors": [{ "dx": -1, "dy": -1 }]
+            }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "zone_filters": [
+            "cannot_cross_center_line"
+          ],
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["xiangqi", "zone_based", "blockable_leaper"]
+    },
+    {
+      "id": "gold_general",
+      "name": "Gold General",
+      "family": "directional",
+      "description": "One step forward, forward diagonals, sideways, and straight back.",
+      "move_patterns": [
+        {
+          "id": "gold_move",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 0, "dy": 1 },
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "gold_capture",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 0, "dy": 1 },
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["shogi", "directional", "stepper"]
+    },
+    {
+      "id": "silver_general",
+      "name": "Silver General",
+      "family": "directional",
+      "description": "One step forward, forward diagonals, and backward diagonals.",
+      "move_patterns": [
+        {
+          "id": "silver_move",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 0, "dy": 1 },
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "silver_capture",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 0, "dy": 1 },
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["shogi", "directional", "stepper"]
+    },
+    {
+      "id": "amazon",
+      "name": "Amazon",
+      "family": "compound",
+      "description": "Queen plus knight.",
+      "move_patterns": [
+        {
+          "id": "amazon_queen_move",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 },
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        },
+        {
+          "id": "amazon_knight_move",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 1, "dy": 2 },
+            { "dx": -1, "dy": 2 },
+            { "dx": 1, "dy": -2 },
+            { "dx": -1, "dy": -2 },
+            { "dx": 2, "dy": 1 },
+            { "dx": -2, "dy": 1 },
+            { "dx": 2, "dy": -1 },
+            { "dx": -2, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "amazon_queen_capture",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 },
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        },
+        {
+          "id": "amazon_knight_capture",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 1, "dy": 2 },
+            { "dx": -1, "dy": 2 },
+            { "dx": 1, "dy": -2 },
+            { "dx": -1, "dy": -2 },
+            { "dx": 2, "dy": 1 },
+            { "dx": -2, "dy": 1 },
+            { "dx": 2, "dy": -1 },
+            { "dx": -2, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["fairy", "compound", "boss"]
+    },
+    {
+      "id": "chancellor",
+      "name": "Chancellor",
+      "family": "compound",
+      "description": "Rook plus knight.",
+      "move_patterns": [
+        {
+          "id": "chancellor_rook_move",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        },
+        {
+          "id": "chancellor_knight_move",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 1, "dy": 2 },
+            { "dx": -1, "dy": 2 },
+            { "dx": 1, "dy": -2 },
+            { "dx": -1, "dy": -2 },
+            { "dx": 2, "dy": 1 },
+            { "dx": -2, "dy": 1 },
+            { "dx": 2, "dy": -1 },
+            { "dx": -2, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "chancellor_rook_capture",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        },
+        {
+          "id": "chancellor_knight_capture",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 1, "dy": 2 },
+            { "dx": -1, "dy": 2 },
+            { "dx": 1, "dy": -2 },
+            { "dx": -1, "dy": -2 },
+            { "dx": 2, "dy": 1 },
+            { "dx": -2, "dy": 1 },
+            { "dx": 2, "dy": -1 },
+            { "dx": -2, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["fairy", "compound"]
+    },
+    {
+      "id": "archbishop",
+      "name": "Archbishop",
+      "family": "compound",
+      "description": "Bishop plus knight.",
+      "move_patterns": [
+        {
+          "id": "archbishop_bishop_move",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        },
+        {
+          "id": "archbishop_knight_move",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 1, "dy": 2 },
+            { "dx": -1, "dy": 2 },
+            { "dx": 1, "dy": -2 },
+            { "dx": -1, "dy": -2 },
+            { "dx": 2, "dy": 1 },
+            { "dx": -2, "dy": 1 },
+            { "dx": 2, "dy": -1 },
+            { "dx": -2, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "archbishop_bishop_capture",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 1 },
+            { "dx": -1, "dy": 1 },
+            { "dx": 1, "dy": -1 },
+            { "dx": -1, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": "unlimited" },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        },
+        {
+          "id": "archbishop_knight_capture",
+          "pattern_type": "leap",
+          "vectors": [
+            { "dx": 1, "dy": 2 },
+            { "dx": -1, "dy": 2 },
+            { "dx": 1, "dy": -2 },
+            { "dx": -1, "dy": -2 },
+            { "dx": 2, "dy": 1 },
+            { "dx": -2, "dy": 1 },
+            { "dx": 2, "dy": -1 },
+            { "dx": -2, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["fairy", "compound"]
+    },
+    {
+      "id": "rifleman_line",
+      "name": "Rifleman Line",
+      "family": "ranged_los",
+      "description": "Moves one step orthogonally. Captures at line-of-sight range 2-4 without movement.",
+      "move_patterns": [
+        {
+          "id": "rifleman_line_move",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "rifleman_line_capture",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 2, "max": 4 },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["ranged", "los", "line"]
+    },
+    {
+      "id": "musketeer_line",
+      "name": "Musketeer Line",
+      "family": "ranged_los",
+      "description": "Moves one step orthogonally. Captures at exact line-of-sight range 2 without movement.",
+      "move_patterns": [
+        {
+          "id": "musketeer_line_move",
+          "pattern_type": "step",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 1, "max": 1 },
+          "path_rules": {
+            "can_jump": false
+          },
+          "target_filters": {
+            "can_target_empty": true,
+            "can_target_enemy": false,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "capture_patterns": [
+        {
+          "id": "musketeer_line_capture",
+          "pattern_type": "ride",
+          "vectors": [
+            { "dx": 1, "dy": 0 },
+            { "dx": -1, "dy": 0 },
+            { "dx": 0, "dy": 1 },
+            { "dx": 0, "dy": -1 }
+          ],
+          "range": { "min": 2, "max": 2 },
+          "path_rules": {
+            "can_jump": false,
+            "require_clear_path": true
+          },
+          "target_filters": {
+            "can_target_empty": false,
+            "can_target_enemy": true,
+            "can_target_ally": false
+          }
+        }
+      ],
+      "keywords": ["ranged", "los", "line", "breaker"]
+    }
+  ],
+  "tags": [
+    {
+      "id": "safe_deploy",
+      "name": "Safe Deploy",
+      "category": "deployment",
+      "description": "Cannot be deployed into an enemy-threatened square.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "safe_deploy_flag",
+          "op": "set",
+          "target": "deployment.must_be_safe_square",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "threat_override",
+      "name": "Threat Override",
+      "category": "deployment",
+      "description": "May be deployed into enemy-threatened squares.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "threat_override_allow",
+          "op": "set",
+          "target": "deployment.can_enter_threatened_square",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        },
+        {
+          "id": "threat_override_disable_safe",
+          "op": "set",
+          "target": "deployment.must_be_safe_square",
+          "value": false,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "backline_only",
+      "name": "Backline Only",
+      "category": "deployment",
+      "description": "Must deploy in the owner's backline zone.",
+      "stacking": "replace",
+      "effects": [
+        {
+          "id": "backline_zone",
+          "op": "set",
+          "target": "deployment.allowed_zones",
+          "value": ["home_backline"],
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "home_half_only",
+      "name": "Home Half Only",
+      "category": "deployment",
+      "description": "Must deploy in the owner's half of the board.",
+      "stacking": "replace",
+      "effects": [
+        {
+          "id": "home_half_zone",
+          "op": "set",
+          "target": "deployment.allowed_zones",
+          "value": ["home_half"],
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "enemy_half_only",
+      "name": "Enemy Half Only",
+      "category": "deployment",
+      "description": "Must deploy in the enemy half of the board.",
+      "stacking": "replace",
+      "effects": [
+        {
+          "id": "enemy_half_zone",
+          "op": "set",
+          "target": "deployment.allowed_zones",
+          "value": ["enemy_half"],
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "adjacent_ally_deploy",
+      "name": "Adjacent Ally Deploy",
+      "category": "deployment",
+      "description": "Must deploy adjacent to an allied piece.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "adjacent_ally_requirement",
+          "op": "set",
+          "target": "deployment.must_be_adjacent_to_ally",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "haste",
+      "name": "Haste",
+      "category": "tempo",
+      "description": "May move and capture on the deploy turn.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "haste_can_act",
+          "op": "set",
+          "target": "tempo.can_act_on_deploy",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        },
+        {
+          "id": "haste_can_capture",
+          "op": "set",
+          "target": "tempo.can_capture_on_deploy",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "move_only_on_deploy",
+      "name": "Move Only on Deploy",
+      "category": "tempo",
+      "description": "May act on the deploy turn, but may not capture.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "move_only_can_act",
+          "op": "set",
+          "target": "tempo.can_act_on_deploy",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        },
+        {
+          "id": "move_only_no_capture",
+          "op": "set",
+          "target": "tempo.can_capture_on_deploy",
+          "value": false,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "delayed_wake_1",
+      "name": "Delayed Wake 1",
+      "category": "tempo",
+      "description": "Cannot act until one full round has passed.",
+      "stacking": "replace",
+      "effects": [
+        {
+          "id": "delay_rounds",
+          "op": "set",
+          "target": "tempo.deploy_delay_rounds",
+          "value": 1,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "exhaust_after_capture",
+      "name": "Exhaust After Capture",
+      "category": "tempo",
+      "description": "Becomes exhausted after making a capture.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "exhaust_capture",
+          "op": "set",
+          "target": "tempo.exhaust_after_capture",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "ranged_capture_no_advance",
+      "name": "Ranged Capture (No Advance)",
+      "category": "tempo",
+      "description": "Captures without moving into the target square.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "capture_no_advance",
+          "op": "set",
+          "target": "tempo.capture_advances",
+          "value": false,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "shield_1",
+      "name": "Shield 1",
+      "category": "defense",
+      "description": "Ignore the first successful capture against this piece.",
+      "stacking": "stack",
+      "effects": [
+        {
+          "id": "shield_add_1",
+          "op": "add",
+          "target": "stats.shields",
+          "value": 1,
+          "scope": "self",
+          "merge_behavior": "stack"
+        }
+      ]
+    },
+    {
+      "id": "shield_2",
+      "name": "Shield 2",
+      "category": "defense",
+      "description": "Ignore the first two successful captures against this piece.",
+      "stacking": "stack",
+      "effects": [
+        {
+          "id": "shield_add_2",
+          "op": "add",
+          "target": "stats.shields",
+          "value": 2,
+          "scope": "self",
+          "merge_behavior": "stack"
+        }
+      ]
+    },
+    {
+      "id": "armor_vs_ranged",
+      "name": "Armor vs Ranged",
+      "category": "defense",
+      "description": "Reduces or negates ranged capture effects.",
+      "stacking": "max",
+      "effects": [
+        {
+          "id": "armor_ranged",
+          "op": "add",
+          "target": "defense.armor_vs_ranged",
+          "value": 1,
+          "scope": "self",
+          "merge_behavior": "max"
+        }
+      ]
+    },
+    {
+      "id": "phased_on_deploy",
+      "name": "Phased on Deploy",
+      "category": "defense",
+      "description": "Cannot be targeted until the start of the owner's next turn.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "phased_flag",
+          "op": "set",
+          "target": "defense.untargetable_until",
+          "value": "start_of_owner_next_turn",
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "fragile",
+      "name": "Fragile",
+      "category": "defense",
+      "description": "Falls easily; useful for high-risk aggressive units.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "fragile_flag",
+          "op": "set",
+          "target": "defense.fragile",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "range_cap_3",
+      "name": "Range Cap 3",
+      "category": "range_path",
+      "description": "Caps rider-style movement and capture range to 3.",
+      "stacking": "replace",
+      "effects": [
+        {
+          "id": "range_cap_3_move",
+          "op": "set",
+          "target": "movement.range_cap.move",
+          "value": 3,
+          "scope": "self",
+          "merge_behavior": "replace"
+        },
+        {
+          "id": "range_cap_3_capture",
+          "op": "set",
+          "target": "movement.range_cap.capture",
+          "value": 3,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "range_cap_4",
+      "name": "Range Cap 4",
+      "category": "range_path",
+      "description": "Caps rider-style movement and capture range to 4.",
+      "stacking": "replace",
+      "effects": [
+        {
+          "id": "range_cap_4_move",
+          "op": "set",
+          "target": "movement.range_cap.move",
+          "value": 4,
+          "scope": "self",
+          "merge_behavior": "replace"
+        },
+        {
+          "id": "range_cap_4_capture",
+          "op": "set",
+          "target": "movement.range_cap.capture",
+          "value": 4,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "gain_shield_if_idle",
+      "name": "Gain Shield If Idle",
+      "category": "growth",
+      "description": "If this piece spends a round idle, it gains 1 shield.",
+      "stacking": "stack",
+      "effects": [
+        {
+          "id": "gain_shield_on_idle",
+          "op": "trigger",
+          "target": "progression.on_idle_round",
+          "value": {
+            "grant": {
+              "target": "stats.shields",
+              "amount": 1
+            }
+          },
+          "scope": "self",
+          "condition": {
+            "event": "on_idle_round"
+          },
+          "merge_behavior": "stack"
+        }
+      ]
+    },
+    {
+      "id": "bodyguard_adjacent",
+      "name": "Bodyguard Adjacent",
+      "category": "defense",
+      "description": "Redirects lethal captures from adjacent allies to this piece.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "bodyguard_adjacent_enable",
+          "op": "set",
+          "target": "defense.protect_adjacent_allies",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "expires_after_3_rounds",
+      "name": "Expires After 3 Rounds",
+      "category": "growth",
+      "description": "This piece is temporary and expires after 3 rounds in play.",
+      "stacking": "replace",
+      "effects": [
+        {
+          "id": "expire_3_rounds",
+          "op": "set",
+          "target": "lifecycle.expire_after_rounds",
+          "value": 3,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "bonus_on_capture_1",
+      "name": "Bonus on Capture +1",
+      "category": "scoring",
+      "description": "Scores 1 extra point whenever this piece captures.",
+      "stacking": "stack",
+      "effects": [
+        {
+          "id": "capture_bonus_add",
+          "op": "add",
+          "target": "scoring.bonus_on_capture",
+          "value": 1,
+          "scope": "self",
+          "merge_behavior": "stack"
+        }
+      ]
+    },
+    {
+      "id": "bounty_on_death_2",
+      "name": "Bounty on Death +2",
+      "category": "scoring",
+      "description": "Worth 2 extra points when destroyed.",
+      "stacking": "stack",
+      "effects": [
+        {
+          "id": "death_bounty_add",
+          "op": "add",
+          "target": "scoring.bounty_on_death",
+          "value": 2,
+          "scope": "self",
+          "merge_behavior": "stack"
+        }
+      ]
+    },
+    {
+      "id": "pierce_1",
+      "name": "Pierce 1",
+      "category": "anti_defense",
+      "description": "Removes one defense layer before capture resolution.",
+      "stacking": "stack",
+      "effects": [
+        {
+          "id": "pierce_layers_add_1",
+          "op": "add",
+          "target": "defense.pierce_layers",
+          "value": 1,
+          "scope": "self",
+          "merge_behavior": "stack"
+        }
+      ]
+    },
+    {
+      "id": "break_1",
+      "name": "Break 1",
+      "category": "anti_defense",
+      "description": "On shielded targets, strips one defense layer without forcing a kill.",
+      "stacking": "stack",
+      "effects": [
+        {
+          "id": "break_layers_add_1",
+          "op": "add",
+          "target": "defense.break_layers_on_hit",
+          "value": 1,
+          "scope": "self",
+          "merge_behavior": "stack"
+        }
+      ]
+    },
+    {
+      "id": "displace_push_nonlethal_1",
+      "name": "Push On Non-Lethal 1",
+      "category": "control",
+      "description": "On non-lethal contact, pushes the defender 1 tile away if destination is open.",
+      "stacking": "stack",
+      "effects": [
+        {
+          "id": "displace_push_nonlethal_add_1",
+          "op": "add",
+          "target": "control.displace_push_on_nonlethal",
+          "value": 1,
+          "scope": "self",
+          "merge_behavior": "stack"
+        }
+      ]
+    },
+    {
+      "id": "displace_pull_nonlethal_1",
+      "name": "Pull On Non-Lethal 1",
+      "category": "control",
+      "description": "On non-lethal contact, pulls the defender 1 tile toward the attacker if destination is open.",
+      "stacking": "stack",
+      "effects": [
+        {
+          "id": "displace_pull_nonlethal_add_1",
+          "op": "add",
+          "target": "control.displace_pull_on_nonlethal",
+          "value": 1,
+          "scope": "self",
+          "merge_behavior": "stack"
+        }
+      ]
+    },
+    {
+      "id": "thrust",
+      "name": "Thrust",
+      "category": "contact_capture",
+      "description": "After a lethal contact capture, performs one forward adjacent follow-up capture check.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "thrust_followup_forward_enable",
+          "op": "set",
+          "target": "combat.followup_capture_forward",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "cleave",
+      "name": "Cleave",
+      "category": "contact_capture",
+      "description": "After a lethal contact capture, performs left and right adjacent follow-up capture checks.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "cleave_followup_sides_enable",
+          "op": "set",
+          "target": "combat.followup_capture_sides",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "avatar_core_unit",
+      "name": "Avatar Core Unit",
+      "category": "avatar",
+      "description": "Marks this piece as the run-identity avatar unit.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "avatar_core_enable",
+          "op": "set",
+          "target": "avatar.core",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    },
+    {
+      "id": "deploy_cost_plus_1",
+      "name": "Deploy Cost +1",
+      "category": "economy",
+      "description": "Costs 1 additional deploy energy.",
+      "stacking": "stack",
+      "effects": [
+        {
+          "id": "deploy_cost_add",
+          "op": "add",
+          "target": "cost.deploy",
+          "value": 1,
+          "scope": "self",
+          "merge_behavior": "stack"
+        }
+      ]
+    },
+    {
+      "id": "move_cost_plus_1",
+      "name": "Move Cost +1",
+      "category": "economy",
+      "description": "Costs 1 additional move energy.",
+      "stacking": "stack",
+      "effects": [
+        {
+          "id": "move_cost_add",
+          "op": "add",
+          "target": "cost.move",
+          "value": 1,
+          "scope": "self",
+          "merge_behavior": "stack"
+        }
+      ]
+    },
+    {
+      "id": "elite_action_tax",
+      "name": "Elite Action Tax",
+      "category": "economy",
+      "description": "Consumes one extra action slot when used.",
+      "stacking": "stack",
+      "effects": [
+        {
+          "id": "elite_action_tax_add",
+          "op": "add",
+          "target": "cost.actions_consumed",
+          "value": 1,
+          "scope": "self",
+          "merge_behavior": "stack"
+        }
+      ]
+    },
+    {
+      "id": "ambush_deploy",
+      "name": "Ambush Deploy",
+      "category": "deployment",
+      "description": "May deploy into threatened squares and may act immediately, but not capture on deploy.",
+      "stacking": "unique",
+      "effects": [
+        {
+          "id": "ambush_override_threat",
+          "op": "set",
+          "target": "deployment.can_enter_threatened_square",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        },
+        {
+          "id": "ambush_disable_safe",
+          "op": "set",
+          "target": "deployment.must_be_safe_square",
+          "value": false,
+          "scope": "self",
+          "merge_behavior": "replace"
+        },
+        {
+          "id": "ambush_can_act",
+          "op": "set",
+          "target": "tempo.can_act_on_deploy",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        },
+        {
+          "id": "ambush_no_capture",
+          "op": "set",
+          "target": "tempo.can_capture_on_deploy",
+          "value": false,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "id": "avatar_core",
+      "name": "Avatar Core",
+      "description": "Run-persistent leader unit used for avatar progression and hero-card affinity.",
+      "chassis_id": "king",
+      "tag_ids": [
+        "safe_deploy",
+        "avatar_core_unit"
+      ],
+      "cost": {
+        "deploy": 4,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 0,
+        "bounty_on_death": 0,
+        "survival_value": 1,
+        "bonus_on_capture": 0
+      },
+      "rarity": "legendary",
+      "roles": ["avatar", "leader"],
+      "collectible": false
+    },
+    {
+      "id": "fortress_rook",
+      "name": "Fortress Rook",
+      "description": "A slow, durable lane anchor.",
+      "chassis_id": "rook",
+      "tag_ids": [
+        "backline_only",
+        "safe_deploy",
+        "move_only_on_deploy"
+      ],
+      "cost": {
+        "deploy": 1,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 3,
+        "bounty_on_death": 1,
+        "survival_value": 1,
+        "bonus_on_capture": 0
+      },
+      "rarity": "uncommon",
+      "roles": ["anchor", "zone_control"],
+      "limits": {
+        "max_copies_in_deck": 2,
+        "max_copies_on_board": 2
+      }
+    },
+    {
+      "id": "vanguard_knight",
+      "name": "Vanguard Knight",
+      "description": "Aggressive early-game diver that can enter hot squares.",
+      "chassis_id": "knight",
+      "tag_ids": [
+        "threat_override",
+        "haste",
+        "fragile"
+      ],
+      "cost": {
+        "deploy": 1,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 0,
+        "bonus_on_capture": 0
+      },
+      "rarity": "common",
+      "roles": ["raider", "tempo"]
+    },
+    {
+      "id": "cavalry_officers",
+      "name": "Cavalry Officers",
+      "description": "Shield-piercing cavalry strike team for cracking defended lanes.",
+      "chassis_id": "knight",
+      "tag_ids": [
+        "threat_override",
+        "fragile",
+        "pierce_1"
+      ],
+      "cost": {
+        "deploy": 2,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 0,
+        "bonus_on_capture": 0
+      },
+      "rarity": "uncommon",
+      "roles": ["raider", "anti_shield"]
+    },
+    {
+      "id": "maul_guard",
+      "name": "Maul Guard",
+      "description": "Compact breaker unit that strips layered defenses before allies finish.",
+      "chassis_id": "gold_general",
+      "tag_ids": [
+        "home_half_only",
+        "safe_deploy",
+        "break_1"
+      ],
+      "cost": {
+        "deploy": 3,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 1,
+        "bonus_on_capture": 0
+      },
+      "rarity": "uncommon",
+      "roles": ["defender", "shield_breaker"]
+    },
+    {
+      "id": "hook_lancer",
+      "name": "Hook Lancer",
+      "description": "Break-first lancer that shoves shielded defenders out of lane on non-lethal contact.",
+      "chassis_id": "knight",
+      "tag_ids": [
+        "threat_override",
+        "break_1",
+        "displace_push_nonlethal_1"
+      ],
+      "cost": {
+        "deploy": 3,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 0,
+        "bonus_on_capture": 0
+      },
+      "rarity": "uncommon",
+      "roles": ["raider", "disruptor"]
+    },
+    {
+      "id": "chain_warden",
+      "name": "Chain Warden",
+      "description": "Defensive controller that drags shielded attackers forward on non-lethal contact.",
+      "chassis_id": "gold_general",
+      "tag_ids": [
+        "home_half_only",
+        "safe_deploy",
+        "break_1",
+        "displace_pull_nonlethal_1"
+      ],
+      "cost": {
+        "deploy": 2,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 1,
+        "bonus_on_capture": 0
+      },
+      "rarity": "uncommon",
+      "roles": ["defender", "disruptor"]
+    },
+    {
+      "id": "lancer",
+      "name": "Lancer",
+      "description": "Cavalry striker that follows through with a forward hit after lethal contact captures.",
+      "chassis_id": "knight",
+      "tag_ids": [
+        "threat_override",
+        "thrust"
+      ],
+      "cost": {
+        "deploy": 2,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 0,
+        "bonus_on_capture": 0
+      },
+      "rarity": "common",
+      "roles": ["raider", "followup"]
+    },
+    {
+      "id": "halberdier",
+      "name": "Halberdier",
+      "description": "Frontline polearm unit with forward and side follow-up pressure on lethal contact captures.",
+      "chassis_id": "gold_general",
+      "tag_ids": [
+        "safe_deploy",
+        "thrust",
+        "cleave"
+      ],
+      "cost": {
+        "deploy": 3,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 3,
+        "bounty_on_death": 1,
+        "survival_value": 1,
+        "bonus_on_capture": 0
+      },
+      "rarity": "uncommon",
+      "roles": ["frontline", "followup"]
+    },
+    {
+      "id": "rifleman",
+      "name": "Rifleman",
+      "description": "Reliable lane marksman with line-of-sight ranged capture at medium distance.",
+      "chassis_id": "rifleman_line",
+      "tag_ids": [
+        "ranged_capture_no_advance"
+      ],
+      "cost": {
+        "deploy": 1,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 0,
+        "bonus_on_capture": 0
+      },
+      "rarity": "common",
+      "roles": ["ranged", "marksman"]
+    },
+    {
+      "id": "musketeer",
+      "name": "Musketeer",
+      "description": "Heavy shot specialist with short-ranged line-of-sight fire and shield break pressure.",
+      "chassis_id": "musketeer_line",
+      "tag_ids": [
+        "ranged_capture_no_advance",
+        "break_1",
+        "exhaust_after_capture"
+      ],
+      "cost": {
+        "deploy": 2,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 3,
+        "bounty_on_death": 1,
+        "survival_value": 0,
+        "bonus_on_capture": 1
+      },
+      "rarity": "uncommon",
+      "roles": ["ranged", "shield_breaker"]
+    },
+    {
+      "id": "formation_captain",
+      "name": "Formation Captain",
+      "description": "Line support officer that must deploy beside allies and stabilize local fronts.",
+      "chassis_id": "gold_general",
+      "tag_ids": [
+        "adjacent_ally_deploy",
+        "safe_deploy",
+        "shield_1"
+      ],
+      "cost": {
+        "deploy": 2,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 1,
+        "bonus_on_capture": 0
+      },
+      "rarity": "uncommon",
+      "roles": ["defender", "support"]
+    },
+    {
+      "id": "honor_guard",
+      "name": "Honor Guard",
+      "description": "Protective escort that intercepts lethal strikes aimed at adjacent allies at personal risk.",
+      "chassis_id": "gold_general",
+      "tag_ids": [
+        "safe_deploy",
+        "bodyguard_adjacent"
+      ],
+      "cost": {
+        "deploy": 2,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 1,
+        "bonus_on_capture": 0
+      },
+      "rarity": "uncommon",
+      "roles": ["defender", "bodyguard"]
+    },
+    {
+      "id": "patrol_rook",
+      "name": "Patrol Rook",
+      "description": "Mid-range lane controller with a capped movement and capture reach.",
+      "chassis_id": "rook",
+      "tag_ids": [
+        "safe_deploy",
+        "range_cap_3"
+      ],
+      "cost": {
+        "deploy": 2,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 3,
+        "bounty_on_death": 1,
+        "survival_value": 0,
+        "bonus_on_capture": 0
+      },
+      "rarity": "common",
+      "roles": ["anchor", "ranged"]
+    },
+    {
+      "id": "field_mason",
+      "name": "Field Mason",
+      "description": "Deploys a short-lived forward barricade to shape tempo and routes.",
+      "chassis_id": "silver_general",
+      "tag_ids": [
+        "safe_deploy"
+      ],
+      "inline_effects": [
+        {
+          "id": "field_mason_structure_forward_1",
+          "op": "set",
+          "target": "deployment.create_structure_forward_rounds",
+          "value": 1
+        }
+      ],
+      "cost": {
+        "deploy": 2,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 0,
+        "bonus_on_capture": 0
+      },
+      "rarity": "uncommon",
+      "roles": ["screen_user", "utility"]
+    },
+    {
+      "id": "bastion_foreman",
+      "name": "Bastion Foreman",
+      "description": "Heavy lane foreman that drops stronger temporary structures on deploy.",
+      "chassis_id": "rook",
+      "tag_ids": [
+        "safe_deploy",
+        "move_only_on_deploy"
+      ],
+      "inline_effects": [
+        {
+          "id": "bastion_foreman_structure_forward_2",
+          "op": "set",
+          "target": "deployment.create_structure_forward_rounds",
+          "value": 1
+        }
+      ],
+      "cost": {
+        "deploy": 3,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 3,
+        "bounty_on_death": 2,
+        "survival_value": 1,
+        "bonus_on_capture": 0
+      },
+      "rarity": "rare",
+      "roles": ["anchor", "screen_user"]
+    },
+    {
+      "id": "siege_cannon",
+      "name": "Siege Cannon",
+      "description": "Powerful ranged threat that needs setup time.",
+      "chassis_id": "cannon",
+      "tag_ids": [
+        "backline_only",
+        "delayed_wake_1"
+      ],
+      "cost": {
+        "deploy": 1,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 4,
+        "bounty_on_death": 3,
+        "survival_value": 1,
+        "bonus_on_capture": 0
+      },
+      "rarity": "rare",
+      "roles": ["siege", "screen_user"]
+    },
+    {
+      "id": "silver_scout",
+      "name": "Silver Scout",
+      "description": "Mobile skirmisher with efficient point pressure.",
+      "chassis_id": "silver_general",
+      "tag_ids": [
+        "safe_deploy",
+        "move_only_on_deploy",
+        "deploy_cost_plus_1"
+      ],
+      "cost": {
+        "deploy": 1,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 0,
+        "bonus_on_capture": 1
+      },
+      "rarity": "common",
+      "roles": ["scout", "skirmisher"]
+    },
+    {
+      "id": "ghost_camel",
+      "name": "Ghost Camel",
+      "description": "A strange long leaper that appears briefly and hits hard.",
+      "chassis_id": "camel",
+      "tag_ids": [
+        "phased_on_deploy",
+        "fragile",
+        "expires_after_3_rounds",
+        "bonus_on_capture_1"
+      ],
+      "cost": {
+        "deploy": 3,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 3,
+        "bounty_on_death": 0,
+        "survival_value": 0,
+        "bonus_on_capture": 1
+      },
+      "rarity": "uncommon",
+      "roles": ["assassin", "tempo"]
+    },
+    {
+      "id": "shadow_spy",
+      "name": "Shadow Spy",
+      "description": "Infiltrator that deploys in enemy territory and retreats with reverse-pawn movement.",
+      "chassis_id": "reverse_pawn",
+      "tag_ids": [
+        "enemy_half_only"
+      ],
+      "cost": {
+        "deploy": 1,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 0,
+        "bonus_on_capture": 0
+      },
+      "rarity": "uncommon",
+      "roles": ["infiltrator", "tempo"]
+    },
+    {
+      "id": "gate_guard",
+      "name": "Gate Guard",
+      "description": "Compact defensive unit for holding lanes and protecting deploy zones.",
+      "chassis_id": "gold_general",
+      "tag_ids": [
+        "home_half_only",
+        "safe_deploy",
+        "shield_1",
+        "gain_shield_if_idle"
+      ],
+      "cost": {
+        "deploy": 2,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 2,
+        "bounty_on_death": 1,
+        "survival_value": 1,
+        "bonus_on_capture": 0
+      },
+      "rarity": "common",
+      "roles": ["defender", "bodyguard"]
+    },
+    {
+      "id": "hopper_assassin",
+      "name": "Hopper Assassin",
+      "description": "A grasshopper-based ambusher that depends on screens and chaos.",
+      "chassis_id": "grasshopper",
+      "tag_ids": [
+        "ambush_deploy",
+        "fragile",
+        "bonus_on_capture_1"
+      ],
+      "cost": {
+        "deploy": 2,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 3,
+        "bounty_on_death": 1,
+        "survival_value": 0,
+        "bonus_on_capture": 1
+      },
+      "rarity": "rare",
+      "roles": ["assassin", "trickster"]
+    },
+    {
+      "id": "elephant_wall",
+      "name": "Elephant Wall",
+      "description": "A chunky zone-limited blocker with high staying power.",
+      "chassis_id": "xiangqi_elephant",
+      "tag_ids": [
+        "backline_only",
+        "shield_1",
+        "safe_deploy"
+      ],
+      "cost": {
+        "deploy": 2,
+        "move": 1,
+        "actions_consumed": 1
+      },
+      "score": {
+        "kill_value": 3,
+        "bounty_on_death": 1,
+        "survival_value": 1,
+        "bonus_on_capture": 0
+      },
+      "rarity": "uncommon",
+      "roles": ["tank", "wall"]
+    },
+    {
+      "id": "archon_chancellor",
+      "name": "Archon Chancellor",
+      "description": "A premium compound threat with real presence and real downside.",
+      "chassis_id": "chancellor",
+      "tag_ids": [
+        "shield_1",
+        "range_cap_4",
+        "deploy_cost_plus_1",
+        "elite_action_tax",
+        "bounty_on_death_2"
+      ],
+      "cost": {
+        "deploy": 3,
+        "move": 1,
+        "actions_consumed": 2
+      },
+      "score": {
+        "kill_value": 5,
+        "bounty_on_death": 3,
+        "survival_value": 1,
+        "bonus_on_capture": 0
+      },
+      "rarity": "epic",
+      "roles": ["boss", "pressure", "lane_breaker"]
+    }
+  ],
+  "hero_cards": [
+    {
+      "id": "hero_guard_order",
+      "name": "Guard Order",
+      "description": "Grant a protective shield to a friendly unit for the battle.",
+      "cost": 2,
+      "target_scope": "friendly_unit",
+      "duration": "until_battle_end",
+      "avatar_affinity_cost_delta": -1,
+      "effects": [
+        {
+          "id": "hero_guard_order_shield_add_1",
+          "op": "add",
+          "target": "stats.shields",
+          "value": 1,
+          "scope": "self",
+          "merge_behavior": "stack"
+        }
+      ],
+      "rarity": "common",
+      "roles": ["avatar_support", "survival"]
+    },
+    {
+      "id": "hero_lance_order",
+      "name": "Lance Order",
+      "description": "Grant forward follow-up pressure to a friendly unit for the battle.",
+      "cost": 2,
+      "target_scope": "friendly_unit",
+      "duration": "until_battle_end",
+      "avatar_affinity_cost_delta": -1,
+      "effects": [
+        {
+          "id": "hero_lance_order_followup_forward",
+          "op": "set",
+          "target": "combat.followup_capture_forward",
+          "value": true,
+          "scope": "self",
+          "merge_behavior": "replace"
+        }
+      ],
+      "rarity": "common",
+      "roles": ["avatar_offense", "followup"]
+    }
+  ],
+  "rulesets": [
+    {
+      "id": "default_light_energy",
+      "name": "Default Light Energy",
+      "description": "Recommended starting ruleset: deploy one piece and move one piece each turn, with elite cards able to consume extra actions.",
+      "starting_board_sizes": [
+        { "width": 6, "height": 6 },
+        { "width": 8, "height": 8 }
+      ],
+      "default_turn_structure": "light_energy",
+      "global_effects": [
+        {
+          "id": "global_safe_deploy_default",
+          "op": "set",
+          "target": "rules.default_deployment.must_be_safe_square",
+          "value": true,
+          "scope": "global",
+          "merge_behavior": "replace"
+        },
+        {
+          "id": "global_default_no_capture_on_deploy",
+          "op": "set",
+          "target": "rules.default_tempo.can_capture_on_deploy",
+          "value": false,
+          "scope": "global",
+          "merge_behavior": "replace"
+        }
+      ]
+    }
+  ]
+}

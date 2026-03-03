@@ -4,14 +4,29 @@
 #include "Scene/Entity.h"
 #include "Scene/SceneRegistry.h"
 
-#include "Asset/Model.h"
 #include "Renderer/SceneRenderer.h"
 
 namespace Axiom
 {
+    namespace
+    {
+        template<typename T>
+        void CopyIfExists(entt::registry& dstRegistry, entt::registry& srcRegistry,
+            entt::entity dstEntity, entt::entity srcEntity)
+        {
+            if (srcRegistry.all_of<T>(srcEntity))
+            {
+                dstRegistry.emplace<T>(dstEntity, srcRegistry.get<T>(srcEntity));
+            }
+        }
+    }
+
     Scene::Scene()
         : m_Registry(std::make_unique<Detail::SceneRegistry>())
     {
+        auto camera = CreateEntity("Main Camera");
+        camera.AddComponent<CameraComponent>();
+        camera.GetComponent<TransformComponent>().Translation = Math::Vec3(0.0f, 0.0f, 5.0f);
     }
 
     Scene::~Scene() = default;
@@ -79,27 +94,57 @@ namespace Axiom
             renderer.Submit(mesh.MeshPtr, transform.GetTransform());
         }
 
-        auto modelView = registry.view<TransformComponent, ModelComponent>();
-        for (const auto entity : modelView)
-        {
-            auto& transform = modelView.get<TransformComponent>(entity);
-            auto& model = modelView.get<ModelComponent>(entity);
-            if (!model.ModelPtr)
-            {
-                continue;
-            }
+        renderer.EndScene();
+    }
 
-            const auto entityTransform = transform.GetTransform();
-            for (const auto& submesh : model.ModelPtr->GetSubmeshes())
-            {
-                if (!submesh.MeshPtr || !submesh.MaterialPtr)
-                {
-                    continue;
-                }
-                renderer.Submit(submesh.MeshPtr, submesh.MaterialPtr, entityTransform * submesh.Transform);
-            }
+    void Scene::OnRender(SceneRenderer& renderer, const Math::Mat4& viewProjection)
+    {
+        auto& registry = m_Registry->Registry;
+        renderer.BeginScene(viewProjection);
+
+        auto view = registry.view<TransformComponent, MeshComponent>();
+        for (const auto entity : view)
+        {
+            auto& transform = view.get<TransformComponent>(entity);
+            auto& mesh = view.get<MeshComponent>(entity);
+            renderer.Submit(mesh.MeshPtr, transform.GetTransform());
         }
 
         renderer.EndScene();
+    }
+
+    std::vector<Entity> Scene::GetAllEntities()
+    {
+        std::vector<Entity> entities;
+        auto& registry = m_Registry->Registry;
+        auto view = registry.view<IDComponent>();
+        for (const auto entity : view)
+        {
+            Entity wrapper(Detail::ToEntityHandle(entity), this);
+            entities.push_back(wrapper);
+        }
+        return entities;
+    }
+
+    std::unique_ptr<Scene> Scene::Clone() const
+    {
+        auto clone = std::make_unique<Scene>();
+        auto& srcRegistry = m_Registry->Registry;
+        auto& dstRegistry = clone->m_Registry->Registry;
+
+        auto view = srcRegistry.view<IDComponent>();
+        for (const auto srcEntity : view)
+        {
+            const auto dstEntity = dstRegistry.create();
+
+            dstRegistry.emplace<IDComponent>(dstEntity, srcRegistry.get<IDComponent>(srcEntity));
+            CopyIfExists<TagComponent>(dstRegistry, srcRegistry, dstEntity, srcEntity);
+            CopyIfExists<TransformComponent>(dstRegistry, srcRegistry, dstEntity, srcEntity);
+            CopyIfExists<MeshComponent>(dstRegistry, srcRegistry, dstEntity, srcEntity);
+            CopyIfExists<ModelComponent>(dstRegistry, srcRegistry, dstEntity, srcEntity);
+            CopyIfExists<CameraComponent>(dstRegistry, srcRegistry, dstEntity, srcEntity);
+        }
+
+        return clone;
     }
 }

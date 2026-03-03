@@ -1,0 +1,34 @@
+{
+  "mode": "battle_batch",
+  "seed_start": 42,
+  "max_battles": 10000,
+  "mirror_matches": true,
+  "sample_event_fraction": 0.01,
+  "sampled_log_cap_per_stratum": 500,
+  "worker_threads": 1,
+  "output_root": "sim_reports",
+  "layout_sampling": "uniform_all_levels",
+  "ai_profiles": [
+    {
+      "id": "baseline_current",
+      "weight": 0.5,
+      "capture_weight": 10,
+      "center_weight": 2,
+      "deploy_value_weight": 3
+    },
+    {
+      "id": "capture_bias",
+      "weight": 0.3,
+      "capture_weight": 14,
+      "center_weight": 1,
+      "deploy_value_weight": 2
+    },
+    {
+      "id": "deploy_tempo",
+      "weight": 0.2,
+      "capture_weight": 8,
+      "center_weight": 2,
+      "deploy_value_weight": 6
+    }
+  ]
+}

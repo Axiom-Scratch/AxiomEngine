@@ -1,7 +1,10 @@
 #pragma once
 
+#include "Math/Math.h"
+
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace Axiom
 {
@@ -23,6 +26,9 @@ namespace Axiom
 
         void OnUpdate(float deltaTime);
         void OnRender(SceneRenderer& renderer);
+        void OnRender(SceneRenderer& renderer, const Math::Mat4& viewProjection);
+        std::vector<Entity> GetAllEntities();
+        std::unique_ptr<Scene> Clone() const;
 
     private:
         friend class Entity;

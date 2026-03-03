@@ -14,6 +14,7 @@ namespace Axiom
     {
     public:
         void BeginScene(const Camera& camera);
+        void BeginScene(const Math::Mat4& viewProjection);
         void Submit(const std::shared_ptr<Mesh>& mesh,
             const std::shared_ptr<Material>& material,
             const Math::Mat4& transform);

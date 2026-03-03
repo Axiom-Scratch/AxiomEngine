@@ -1,0 +1,134 @@
+{
+  "levels": [
+    {
+      "id": "normal_1",
+      "tier": "normal",
+      "blockers": {
+        "mode": "random_range",
+        "random": {
+          "min": 0,
+          "max": 2
+        },
+        "constraints": {
+          "symmetry": "mirror_y",
+          "banned_cells": [
+            { "x": 0, "y": 0 },
+            { "x": 1, "y": 0 },
+            { "x": 2, "y": 0 },
+            { "x": 3, "y": 0 },
+            { "x": 4, "y": 0 },
+            { "x": 5, "y": 0 },
+            { "x": 0, "y": 5 },
+            { "x": 1, "y": 5 },
+            { "x": 2, "y": 5 },
+            { "x": 3, "y": 5 },
+            { "x": 4, "y": 5 },
+            { "x": 5, "y": 5 }
+          ]
+        }
+      }
+    },
+    {
+      "id": "normal_2",
+      "tier": "normal",
+      "blockers": {
+        "mode": "random_range",
+        "random": {
+          "min": 2,
+          "max": 4
+        },
+        "constraints": {
+          "symmetry": "mirror_y",
+          "banned_cells": [
+            { "x": 0, "y": 0 },
+            { "x": 1, "y": 0 },
+            { "x": 2, "y": 0 },
+            { "x": 3, "y": 0 },
+            { "x": 4, "y": 0 },
+            { "x": 5, "y": 0 },
+            { "x": 0, "y": 5 },
+            { "x": 1, "y": 5 },
+            { "x": 2, "y": 5 },
+            { "x": 3, "y": 5 },
+            { "x": 4, "y": 5 },
+            { "x": 5, "y": 5 }
+          ]
+        }
+      }
+    },
+    {
+      "id": "elite_1",
+      "tier": "elite",
+      "blockers": {
+        "mode": "authored_pattern",
+        "authored_pattern_id": "cross_lane",
+        "constraints": {
+          "symmetry": "none",
+          "banned_cells": [
+            { "x": 0, "y": 0 },
+            { "x": 1, "y": 0 },
+            { "x": 2, "y": 0 },
+            { "x": 3, "y": 0 },
+            { "x": 4, "y": 0 },
+            { "x": 5, "y": 0 },
+            { "x": 0, "y": 5 },
+            { "x": 1, "y": 5 },
+            { "x": 2, "y": 5 },
+            { "x": 3, "y": 5 },
+            { "x": 4, "y": 5 },
+            { "x": 5, "y": 5 }
+          ]
+        },
+        "cells": [
+          { "x": 2, "y": 2 },
+          { "x": 3, "y": 2 },
+          { "x": 2, "y": 3 },
+          { "x": 3, "y": 3 }
+        ]
+      },
+      "boss_modifiers": {
+        "score_target_delta": 0,
+        "energy_per_turn_delta": -1
+      }
+    },
+    {
+      "id": "boss_1",
+      "tier": "boss",
+      "blockers": {
+        "mode": "authored_pattern",
+        "authored_pattern_id": "boss_fortress",
+        "constraints": {
+          "symmetry": "none",
+          "banned_cells": [
+            { "x": 0, "y": 0 },
+            { "x": 1, "y": 0 },
+            { "x": 2, "y": 0 },
+            { "x": 3, "y": 0 },
+            { "x": 4, "y": 0 },
+            { "x": 5, "y": 0 },
+            { "x": 0, "y": 5 },
+            { "x": 1, "y": 5 },
+            { "x": 2, "y": 5 },
+            { "x": 3, "y": 5 },
+            { "x": 4, "y": 5 },
+            { "x": 5, "y": 5 }
+          ]
+        },
+        "cells": [
+          { "x": 1, "y": 2 },
+          { "x": 2, "y": 2 },
+          { "x": 3, "y": 2 },
+          { "x": 4, "y": 2 },
+          { "x": 1, "y": 3 },
+          { "x": 2, "y": 3 },
+          { "x": 3, "y": 3 },
+          { "x": 4, "y": 3 }
+        ]
+      },
+      "boss_modifiers": {
+        "score_target_delta": 5,
+        "energy_per_turn_delta": -1
+      }
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "family": "skoll",
+  "icons": [
+    {
+      "key": "piece.king",
+      "source_path": "J:\\bevy\\icons\\icons-master\\skoll\\chess-king.svg",
+      "usage": "board_piece",
+      "artist_family": "skoll",
+      "license_note": "Use according to icons-master license terms."
+    },
+    {
+      "key": "piece.queen",
+      "source_path": "J:\\bevy\\icons\\icons-master\\skoll\\chess-queen.svg",
+      "usage": "board_piece",
+      "artist_family": "skoll",
+      "license_note": "Use according to icons-master license terms."
+    },
+    {
+      "key": "piece.rook",
+      "source_path": "J:\\bevy\\icons\\icons-master\\skoll\\chess-rook.svg",
+      "usage": "board_piece",
+      "artist_family": "skoll",
+      "license_note": "Use according to icons-master license terms."
+    },
+    {
+      "key": "piece.bishop",
+      "source_path": "J:\\bevy\\icons\\icons-master\\skoll\\chess-bishop.svg",
+      "usage": "board_piece",
+      "artist_family": "skoll",
+      "license_note": "Use according to icons-master license terms."
+    },
+    {
+      "key": "piece.knight",
+      "source_path": "J:\\bevy\\icons\\icons-master\\skoll\\chess-knight.svg",
+      "usage": "board_piece",
+      "artist_family": "skoll",
+      "license_note": "Use according to icons-master license terms."
+    },
+    {
+      "key": "piece.pawn",
+      "source_path": "J:\\bevy\\icons\\icons-master\\skoll\\chess-pawn.svg",
+      "usage": "board_piece",
+      "artist_family": "skoll",
+      "license_note": "Use according to icons-master license terms."
+    },
+    {
+      "key": "ui.energy",
+      "source_path": "J:\\bevy\\icons\\icons-master\\skoll\\atom.svg",
+      "usage": "hud",
+      "artist_family": "skoll",
+      "license_note": "Use according to icons-master license terms."
+    },
+    {
+      "key": "ui.score",
+      "source_path": "J:\\bevy\\icons\\icons-master\\skoll\\rank-1.svg",
+      "usage": "hud",
+      "artist_family": "skoll",
+      "license_note": "Use according to icons-master license terms."
+    },
+    {
+      "key": "ui.turn",
+      "source_path": "J:\\bevy\\icons\\icons-master\\skoll\\stopwatch.svg",
+      "usage": "hud",
+      "artist_family": "skoll",
+      "license_note": "Use according to icons-master license terms."
+    },
+    {
+      "key": "ui.shield",
+      "source_path": "J:\\bevy\\icons\\icons-master\\skoll\\shield-disabled.svg",
+      "usage": "hud",
+      "artist_family": "skoll",
+      "license_note": "Use according to icons-master license terms."
+    },
+    {
+      "key": "ui.deploy",
+      "source_path": "J:\\bevy\\icons\\icons-master\\skoll\\click.svg",
+      "usage": "hud",
+      "artist_family": "skoll",
+      "license_note": "Use according to icons-master license terms."
+    },
+    {
+      "key": "board.blocker",
+      "source_path": "J:\\bevy\\icons\\icons-master\\skoll\\platform.svg",
+      "usage": "board_tile",
+      "artist_family": "skoll",
+      "license_note": "Use according to icons-master license terms."
+    }
+  ]
+}
