@@ -9,8 +9,14 @@
 
 namespace
 {
+    Axiom::GLProcAddress s_CustomLoader = nullptr;
+
     GLADapiproc LoadGLProc(const char* name)
     {
+        if (s_CustomLoader)
+        {
+            return reinterpret_cast<GLADapiproc>(s_CustomLoader(name));
+        }
         return reinterpret_cast<GLADapiproc>(glfwGetProcAddress(name));
     }
 }
@@ -27,6 +33,11 @@ namespace Axiom
                 return nullptr;
         }
         return nullptr;
+    }
+
+    void OpenGLRendererAPI::SetGLLoader(GLProcAddress loader)
+    {
+        s_CustomLoader = loader;
     }
 
     void OpenGLRendererAPI::Init()

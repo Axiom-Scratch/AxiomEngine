@@ -16,7 +16,11 @@ namespace Axiom
             return it->second;
         }
 
-        auto model = std::make_shared<Model>(ModelLoader::Load(path));
+        auto model = ModelLoader::Load(path);
+        if (!model)
+        {
+            return nullptr;
+        }
         s_ModelCache.emplace(path, model);
         return model;
     }

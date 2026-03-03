@@ -1,9 +1,9 @@
 #include "Axiom.h"
 
+#include <algorithm>
 #include <chrono>
-#include <filesystem>
+#include <cmath>
 #include <string>
-#include <vector>
 
 class SandboxApp final : public Axiom::Application
 {
@@ -11,18 +11,37 @@ public:
     SandboxApp()
         : m_LastTime(std::chrono::steady_clock::now())
     {
-        const float aspect = 1280.0f / 720.0f;
-        m_Camera = std::make_unique<Axiom::Camera>(45.0f, aspect, 0.1f, 100.0f);
-        m_Model = Axiom::AssetManager::LoadModel("Assets/Models/DamagedHelmet.glb");
-        m_ModelLoaded = m_Model && !m_Model->GetSubmeshes().empty();
-        if (!m_ModelLoaded)
+        m_CameraEntity = m_Scene.CreateEntity("MainCamera");
+        m_CameraEntity.AddComponent<Axiom::CameraComponent>();
+        auto& cameraTransform = m_CameraEntity.GetComponent<Axiom::TransformComponent>();
+        cameraTransform.Translation = Axiom::Math::Vec3(0.0f, 0.0f, 5.0f);
+        cameraTransform.Rotation = Axiom::Math::Vec3(0.0f, -90.0f, 0.0f);
+
+        auto helmet1 = Axiom::AssetManager::LoadModel("Assets/Models/DamagedHelmet.glb");
+        auto helmet2 = Axiom::AssetManager::LoadModel("Assets/Models/DamagedHelmet2.glb");
+
+        if (!helmet1 || helmet1->GetSubmeshes().empty())
         {
             Axiom::Log::CoreError("Failed to load model: Assets/Models/DamagedHelmet.glb");
-            return;
+        }
+        if (!helmet2 || helmet2->GetSubmeshes().empty())
+        {
+            Axiom::Log::CoreError("Failed to load model: Assets/Models/DamagedHelmet2.glb");
         }
 
-        CacheOriginalMaterials();
-        BuildCustomMaterial();
+        auto e1 = m_Scene.CreateEntity("HelmetOne");
+        if (helmet1)
+        {
+            e1.AddComponent<Axiom::ModelComponent>(helmet1);
+        }
+        e1.GetComponent<Axiom::TransformComponent>().Translation = Axiom::Math::Vec3(-2.0f, 0.0f, 0.0f);
+
+        auto e2 = m_Scene.CreateEntity("HelmetTwo");
+        if (helmet2)
+        {
+            e2.AddComponent<Axiom::ModelComponent>(helmet2);
+        }
+        e2.GetComponent<Axiom::TransformComponent>().Translation = Axiom::Math::Vec3(2.0f, 0.0f, 0.0f);
     }
 
 protected:
@@ -33,7 +52,6 @@ protected:
         m_LastTime = now;
 
         const float timestep = delta.count();
-        const float speed = 5.0f * timestep;
         auto* window = static_cast<GLFWwindow*>(GetWindow().GetNativeHandle());
 
         if (Axiom::Input::IsKeyPressed(Axiom::Key::Escape))
@@ -49,170 +67,62 @@ protected:
             m_EscapeWasDown = false;
         }
 
+        UpdateCamera(timestep);
+
+        m_Scene.OnUpdate(timestep);
+        m_Scene.OnRender(m_SceneRenderer);
+    }
+
+private:
+    static Axiom::Math::Vec3 GetForward(const Axiom::Math::Vec3& rotation)
+    {
+        const float yawRadians = glm::radians(rotation.y);
+        const float pitchRadians = glm::radians(rotation.x);
+
+        Axiom::Math::Vec3 direction;
+        direction.x = std::cos(yawRadians) * std::cos(pitchRadians);
+        direction.y = std::sin(pitchRadians);
+        direction.z = std::sin(yawRadians) * std::cos(pitchRadians);
+        return glm::normalize(direction);
+    }
+
+    void UpdateCamera(float timestep)
+    {
+        auto& cameraTransform = m_CameraEntity.GetComponent<Axiom::TransformComponent>();
+
+        const float speed = 5.0f * timestep;
+        const auto forward = GetForward(cameraTransform.Rotation);
+        const auto right = glm::normalize(glm::cross(forward, Axiom::Math::Vec3(0.0f, 1.0f, 0.0f)));
+
         if (Axiom::Input::IsKeyPressed(Axiom::Key::W))
         {
-            m_Camera->MoveForward(speed);
+            cameraTransform.Translation += forward * speed;
         }
         if (Axiom::Input::IsKeyPressed(Axiom::Key::S))
         {
-            m_Camera->MoveForward(-speed);
+            cameraTransform.Translation -= forward * speed;
         }
         if (Axiom::Input::IsKeyPressed(Axiom::Key::A))
         {
-            m_Camera->MoveRight(-speed);
+            cameraTransform.Translation -= right * speed;
         }
         if (Axiom::Input::IsKeyPressed(Axiom::Key::D))
         {
-            m_Camera->MoveRight(speed);
+            cameraTransform.Translation += right * speed;
         }
 
         const float sensitivity = 0.1f;
         const float deltaX = Axiom::Input::GetMouseDeltaX();
         const float deltaY = Axiom::Input::GetMouseDeltaY();
-        m_Camera->AddRotation(deltaX * sensitivity, -deltaY * sensitivity);
-
-        if (!m_ModelLoaded)
-        {
-            return;
-        }
-
-        m_Rotation += timestep;
-        UpdateMaterialSwap(timestep);
-
-        const Axiom::Math::Mat4 transform = Axiom::Math::Rotate(
-            Axiom::Math::Identity(),
-            m_Rotation,
-            Axiom::Math::Vec3(0.0f, 1.0f, 0.0f));
-
-        m_SceneRenderer.BeginScene(*m_Camera);
-
-        for (const auto& submesh : m_Model->GetSubmeshes())
-        {
-            if (!submesh.MeshPtr || !submesh.MaterialPtr)
-            {
-                continue;
-            }
-
-            m_SceneRenderer.Submit(submesh.MeshPtr, submesh.MaterialPtr, transform * submesh.Transform);
-        }
-
-        m_SceneRenderer.EndScene();
+        cameraTransform.Rotation.y += deltaX * sensitivity;
+        cameraTransform.Rotation.x = std::clamp(cameraTransform.Rotation.x - deltaY * sensitivity, -89.0f, 89.0f);
     }
 
-private:
-    void CacheOriginalMaterials()
-    {
-        m_OriginalMaterials.clear();
-        m_OriginalMaterials.reserve(m_Model->GetSubmeshes().size());
-
-        for (const auto& submesh : m_Model->GetSubmeshes())
-        {
-            m_OriginalMaterials.push_back(submesh.MaterialPtr);
-        }
-    }
-
-    void BuildCustomMaterial()
-    {
-        const std::string vertexSource = R"(
-#version 330 core
-layout(location = 0) in vec3 a_Position;
-layout(location = 1) in vec3 a_Normal;
-layout(location = 2) in vec2 a_TexCoord;
-
-uniform mat4 u_MVP;
-
-out vec2 v_TexCoord;
-
-void main()
-{
-    v_TexCoord = a_TexCoord;
-    gl_Position = u_MVP * vec4(a_Position, 1.0);
-}
-)";
-
-        const std::string fragmentSource = R"(
-#version 330 core
-out vec4 color;
-
-in vec2 v_TexCoord;
-
-uniform sampler2D u_Albedo;
-uniform vec4 u_BaseColor;
-
-void main()
-{
-    color = texture(u_Albedo, v_TexCoord) * u_BaseColor;
-}
-)";
-
-        m_CustomMaterial = Axiom::Material::Create(vertexSource, fragmentSource);
-        if (!m_CustomMaterial)
-        {
-            Axiom::Log::CoreError("Failed to create custom material.");
-            return;
-        }
-
-        const std::string texturePath = "Assets/Textures/Test.png";
-        std::shared_ptr<Axiom::Texture2D> customTexture;
-        if (std::filesystem::exists(texturePath))
-        {
-            customTexture = Axiom::AssetManager::LoadTexture(texturePath);
-        }
-
-        if (!customTexture)
-        {
-            const unsigned char whitePixel[4] = { 255, 255, 255, 255 };
-            customTexture = Axiom::Texture2D::CreateFromPixels(whitePixel, 1, 1, true);
-        }
-
-        m_CustomMaterial->SetTexture("u_Albedo", customTexture);
-        m_CustomMaterial->SetVec4("u_BaseColor", Axiom::Math::Vec4(0.2f, 0.8f, 0.2f, 1.0f));
-    }
-
-    void UpdateMaterialSwap(float timestep)
-    {
-        if (!m_CustomMaterial || m_OriginalMaterials.empty())
-        {
-            return;
-        }
-
-        m_MaterialSwapTimer += timestep;
-        if (m_MaterialSwapTimer < m_MaterialSwapInterval)
-        {
-            return;
-        }
-
-        m_MaterialSwapTimer = 0.0f;
-        m_UseCustomMaterial = !m_UseCustomMaterial;
-        ApplyMaterialOverride();
-    }
-
-    void ApplyMaterialOverride()
-    {
-        auto& submeshes = m_Model->GetSubmeshes();
-        if (submeshes.size() != m_OriginalMaterials.size())
-        {
-            return;
-        }
-
-        for (size_t i = 0; i < submeshes.size(); ++i)
-        {
-            submeshes[i].MaterialPtr = m_UseCustomMaterial ? m_CustomMaterial : m_OriginalMaterials[i];
-        }
-    }
-
-    std::unique_ptr<Axiom::Camera> m_Camera;
-    std::shared_ptr<Axiom::Model> m_Model;
-    bool m_ModelLoaded = false;
+    Axiom::Scene m_Scene;
     Axiom::SceneRenderer m_SceneRenderer;
+    Axiom::Entity m_CameraEntity;
     std::chrono::steady_clock::time_point m_LastTime;
-    float m_Rotation = 0.0f;
-    float m_MaterialSwapTimer = 0.0f;
-    float m_MaterialSwapInterval = 2.0f;
-    bool m_UseCustomMaterial = false;
     bool m_EscapeWasDown = false;
-    std::vector<std::shared_ptr<Axiom::Material>> m_OriginalMaterials;
-    std::shared_ptr<Axiom::Material> m_CustomMaterial;
 };
 
 Axiom::Scope<Axiom::Application> Axiom::CreateApplication()

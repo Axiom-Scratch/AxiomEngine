@@ -7,6 +7,7 @@ namespace Axiom
     class OpenGLRendererAPI final : public RendererAPI
     {
     public:
+        void SetGLLoader(GLProcAddress loader) override;
         void Init() override;
         void Clear(const glm::vec4& color) override;
         void DrawIndexed(uint32_t indexCount) override;

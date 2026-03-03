@@ -325,9 +325,9 @@ void main()
         }
     }
 
-    Model ModelLoader::Load(const std::string& path)
+    std::shared_ptr<Model> ModelLoader::Load(const std::string& path)
     {
-        Model model;
+        auto model = std::make_shared<Model>();
 
         Assimp::Importer importer;
         const unsigned int flags = aiProcess_Triangulate
@@ -339,7 +339,7 @@ void main()
         if (!scene || !scene->mRootNode || (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) != 0u)
         {
             Log::CoreError(std::string("Assimp failed to load '") + path + "': " + importer.GetErrorString());
-            return model;
+            return nullptr;
         }
 
         ModelImportContext context;
@@ -369,7 +369,7 @@ void main()
 
         ProcessNode(*scene->mRootNode, *scene, context, glm::mat4(1.0f));
 
-        model.m_Submeshes = std::move(context.Submeshes);
+        model->m_Submeshes = std::move(context.Submeshes);
 
         return model;
     }

@@ -10,11 +10,21 @@ namespace Axiom
     namespace
     {
         std::unique_ptr<RendererAPI> s_RendererAPI;
+        GLProcAddress s_GLLoader = nullptr;
+    }
+
+    void RenderCommand::SetGLLoader(GLProcAddress loader)
+    {
+        s_GLLoader = loader;
     }
 
     void RenderCommand::Init()
     {
         s_RendererAPI = RendererAPI::Create(RHI::GetAPIType());
+        if (s_RendererAPI)
+        {
+            s_RendererAPI->SetGLLoader(s_GLLoader);
+        }
         s_RendererAPI->Init();
     }
 

@@ -6,11 +6,14 @@ target_sources(Axiom PRIVATE
     Asset/ModelLoader.cpp
     Core/Application.cpp
     Core/Log.cpp
+    Core/UUID.cpp
     Core/Window.cpp
     Input/Input.cpp
     Platform/GLFW/GLFWCursor.cpp
     Platform/GLFW/GLFWInput.cpp
     Platform/GLFW/GLFWWindow.cpp
+    Scene/Entity.cpp
+    Scene/Scene.cpp
     Renderer/Camera.cpp
     Renderer/Material.cpp
     Renderer/Mesh.cpp
@@ -30,6 +33,8 @@ target_include_directories(Axiom
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_SOURCE_DIR}/external/assimp/contrib
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/external/entt/src
 )
 
 target_link_libraries(Axiom

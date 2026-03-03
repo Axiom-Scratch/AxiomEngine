@@ -7,6 +7,8 @@
 
 namespace Axiom
 {
+    using GLProcAddress = void*(*)(const char*);
+
     enum class RendererAPIType
     {
         None = 0,
@@ -18,6 +20,7 @@ namespace Axiom
     public:
         virtual ~RendererAPI() = default;
 
+        virtual void SetGLLoader(GLProcAddress) {}
         virtual void Init() = 0;
         virtual void Clear(const glm::vec4& color) = 0;
         virtual void DrawIndexed(uint32_t indexCount) = 0;

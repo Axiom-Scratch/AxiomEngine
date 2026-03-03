@@ -17,6 +17,8 @@ namespace Axiom
         void Submit(const std::shared_ptr<Mesh>& mesh,
             const std::shared_ptr<Material>& material,
             const Math::Mat4& transform);
+        void Submit(const std::shared_ptr<Mesh>& mesh,
+            const Math::Mat4& transform);
         void EndScene();
 
     private:

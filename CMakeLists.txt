@@ -79,6 +79,7 @@ endif()
 # -------------------------------------------------
 add_subdirectory(Axiom)
 add_subdirectory(Sandbox)
+add_subdirectory(Editor)
 
 # -------------------------------------------------
 # Game Asset Copy (Build Output)
