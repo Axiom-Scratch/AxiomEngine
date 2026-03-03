@@ -1,4 +1,5 @@
 #include "Core/Application.h"
+#include "Core/Log.h"
 
 #include "Event/EventDispatcher.h"
 
@@ -6,6 +7,7 @@ namespace Axiom
 {
     Application::Application()
     {
+        Log::Init();
         m_Window = Window::Create();
         m_Window->SetEventCallback([this](Event& event) { HandleEvent(event); });
     }

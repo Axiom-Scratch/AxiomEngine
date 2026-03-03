@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(AxiomEngine LANGUAGES CXX)
+project(AxiomEngine LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -25,6 +25,8 @@ if(TARGET glfw)
         target_compile_options(glfw PRIVATE -w)
     endif()
 endif()
+
+add_subdirectory(external/glad)
 
 add_subdirectory(Axiom)
 add_subdirectory(Sandbox)
