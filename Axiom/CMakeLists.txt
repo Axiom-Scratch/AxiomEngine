@@ -1,12 +1,14 @@
 add_library(Axiom STATIC)
 
 target_sources(Axiom PRIVATE
+    Asset/AssetManager.cpp
     Asset/Model.cpp
     Asset/ModelLoader.cpp
     Core/Application.cpp
     Core/Log.cpp
     Core/Window.cpp
     Input/Input.cpp
+    Platform/GLFW/GLFWCursor.cpp
     Platform/GLFW/GLFWInput.cpp
     Platform/GLFW/GLFWWindow.cpp
     Renderer/Camera.cpp

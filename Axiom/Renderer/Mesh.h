@@ -24,8 +24,7 @@ namespace Axiom
 
         ~Mesh();
 
-        void Bind() const;
-        [[nodiscard]] uint32_t GetIndexCount() const;
+        void Draw() const;
 
     private:
         struct MeshData;

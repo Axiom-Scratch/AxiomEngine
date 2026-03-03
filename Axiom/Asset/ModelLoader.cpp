@@ -17,6 +17,7 @@
 
 #include <cstdint>
 #include <filesystem>
+#include <vector>
 #include <utility>
 
 namespace Axiom
@@ -26,8 +27,10 @@ namespace Axiom
         struct ModelImportContext
         {
             std::vector<Model::Submesh> Submeshes;
-            std::vector<ModelMaterial> Materials;
+            std::vector<std::shared_ptr<Material>> Materials;
             std::string Directory;
+            std::shared_ptr<Texture2D> WhiteTexture;
+            std::shared_ptr<Material> FallbackMaterial;
         };
 
         glm::mat4 ToGlm(const aiMatrix4x4& matrix)
@@ -95,44 +98,6 @@ void main()
             return Texture2D::CreateFromPixels(whitePixel, 1, 1, true);
         }
 
-        void AppendTextures(const aiMaterial& material,
-            aiTextureType textureType,
-            ModelTexture::Type targetType,
-            const std::string& directory,
-            std::vector<ModelTexture>& textures)
-        {
-            const unsigned int count = material.GetTextureCount(textureType);
-            for (unsigned int i = 0; i < count; ++i)
-            {
-                aiString path;
-                if (material.GetTexture(textureType, i, &path) != AI_SUCCESS)
-                {
-                    continue;
-                }
-
-                std::string pathString = path.C_Str();
-                ModelTexture texture;
-                texture.TextureType = targetType;
-                texture.Embedded = !pathString.empty() && pathString.front() == '*';
-
-                if (texture.Embedded || pathString.empty())
-                {
-                    texture.Path = pathString;
-                }
-                else
-                {
-                    std::filesystem::path texturePath(pathString);
-                    if (texturePath.is_relative() && !directory.empty())
-                    {
-                        texturePath = std::filesystem::path(directory) / texturePath;
-                    }
-                    texture.Path = texturePath.lexically_normal().string();
-                }
-
-                textures.push_back(std::move(texture));
-            }
-        }
-
         std::shared_ptr<Texture2D> LoadMaterialTexture(const aiMaterial& material,
             const aiScene& scene,
             aiTextureType textureType,
@@ -172,8 +137,23 @@ void main()
                     }
                     else
                     {
-                        const auto* data = reinterpret_cast<const uint8_t*>(embedded->pcData);
-                        auto texture = Texture2D::CreateFromPixels(data, embedded->mWidth, embedded->mHeight, true);
+                        const uint32_t width = embedded->mWidth;
+                        const uint32_t height = embedded->mHeight;
+                        const size_t texelCount = static_cast<size_t>(width) * static_cast<size_t>(height);
+                        std::vector<uint8_t> pixels;
+                        pixels.resize(texelCount * 4u);
+
+                        for (size_t texelIndex = 0; texelIndex < texelCount; ++texelIndex)
+                        {
+                            const aiTexel& texel = embedded->pcData[texelIndex];
+                            const size_t pixelIndex = texelIndex * 4u;
+                            pixels[pixelIndex + 0u] = texel.r;
+                            pixels[pixelIndex + 1u] = texel.g;
+                            pixels[pixelIndex + 2u] = texel.b;
+                            pixels[pixelIndex + 3u] = texel.a;
+                        }
+
+                        auto texture = Texture2D::CreateFromPixels(pixels.data(), width, height, true);
                         if (texture)
                         {
                             return texture;
@@ -198,28 +178,27 @@ void main()
             return nullptr;
         }
 
-        ModelMaterial BuildMaterial(const aiMaterial& material,
+        std::shared_ptr<Material> BuildMaterial(const aiMaterial& material,
             const aiScene& scene,
-            const std::string& directory)
+            const std::string& directory,
+            const std::shared_ptr<Texture2D>& fallbackTexture)
         {
-            ModelMaterial result;
-            result.MaterialPtr = CreateDefaultMaterial();
-
-            aiColor4D baseColor;
-            if (material.Get(AI_MATKEY_BASE_COLOR, baseColor) == AI_SUCCESS)
+            auto result = CreateDefaultMaterial();
+            if (!result)
             {
-                result.BaseColor = glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a);
-            }
-            else if (material.Get(AI_MATKEY_COLOR_DIFFUSE, baseColor) == AI_SUCCESS)
-            {
-                result.BaseColor = glm::vec4(baseColor.r, baseColor.g, baseColor.b, baseColor.a);
+                return nullptr;
             }
 
-            AppendTextures(material, aiTextureType_BASE_COLOR, ModelTexture::Type::Diffuse, directory, result.Textures);
-            AppendTextures(material, aiTextureType_DIFFUSE, ModelTexture::Type::Diffuse, directory, result.Textures);
-            AppendTextures(material, aiTextureType_SPECULAR, ModelTexture::Type::Specular, directory, result.Textures);
-            AppendTextures(material, aiTextureType_NORMALS, ModelTexture::Type::Normal, directory, result.Textures);
-            AppendTextures(material, aiTextureType_EMISSIVE, ModelTexture::Type::Emissive, directory, result.Textures);
+            glm::vec4 baseColor(1.0f);
+            aiColor4D aiBaseColor;
+            if (material.Get(AI_MATKEY_BASE_COLOR, aiBaseColor) == AI_SUCCESS)
+            {
+                baseColor = glm::vec4(aiBaseColor.r, aiBaseColor.g, aiBaseColor.b, aiBaseColor.a);
+            }
+            else if (material.Get(AI_MATKEY_COLOR_DIFFUSE, aiBaseColor) == AI_SUCCESS)
+            {
+                baseColor = glm::vec4(aiBaseColor.r, aiBaseColor.g, aiBaseColor.b, aiBaseColor.a);
+            }
 
             auto albedo = LoadMaterialTexture(material, scene, aiTextureType_BASE_COLOR, directory);
             if (!albedo)
@@ -228,29 +207,31 @@ void main()
             }
             if (!albedo)
             {
-                albedo = CreateWhiteTexture();
+                albedo = fallbackTexture ? fallbackTexture : CreateWhiteTexture();
             }
 
-            if (result.MaterialPtr)
-            {
-                result.MaterialPtr->SetAlbedoTexture(albedo);
-            }
-
+            result->SetTexture("u_Albedo", albedo);
+            result->SetVec4("u_BaseColor", baseColor);
             return result;
         }
 
-        ModelMaterial CreateDefaultModelMaterial()
+        std::shared_ptr<Material> CreateDefaultModelMaterial(const std::shared_ptr<Texture2D>& fallbackTexture)
         {
-            ModelMaterial result;
-            result.MaterialPtr = CreateDefaultMaterial();
-            if (result.MaterialPtr)
+            auto material = CreateDefaultMaterial();
+            if (!material)
             {
-                result.MaterialPtr->SetAlbedoTexture(CreateWhiteTexture());
+                return nullptr;
             }
-            return result;
+
+            auto texture = fallbackTexture ? fallbackTexture : CreateWhiteTexture();
+            material->SetTexture("u_Albedo", texture);
+            material->SetVec4("u_BaseColor", glm::vec4(1.0f));
+            return material;
         }
 
-        Model::Submesh ProcessMesh(const aiMesh& mesh, const glm::mat4& transform)
+        Model::Submesh ProcessMesh(const aiMesh& mesh,
+            const glm::mat4& transform,
+            const std::shared_ptr<Material>& material)
         {
             std::vector<Mesh::Vertex> vertices;
             vertices.reserve(mesh.mNumVertices);
@@ -299,7 +280,7 @@ void main()
 
             Model::Submesh submesh;
             submesh.MeshPtr = Mesh::Create(vertices, indices);
-            submesh.MaterialIndex = mesh.mMaterialIndex;
+            submesh.MaterialPtr = material;
             submesh.Transform = transform;
             return submesh;
         }
@@ -319,7 +300,17 @@ void main()
                     continue;
                 }
 
-                context.Submeshes.push_back(ProcessMesh(*mesh, nodeTransform));
+                std::shared_ptr<Material> material;
+                if (mesh->mMaterialIndex < context.Materials.size())
+                {
+                    material = context.Materials[mesh->mMaterialIndex];
+                }
+                if (!material)
+                {
+                    material = context.FallbackMaterial;
+                }
+
+                context.Submeshes.push_back(ProcessMesh(*mesh, nodeTransform, material));
             }
 
             for (unsigned int i = 0; i < node.mNumChildren; ++i)
@@ -353,11 +344,13 @@ void main()
 
         ModelImportContext context;
         context.Directory = std::filesystem::path(path).parent_path().string();
+        context.WhiteTexture = CreateWhiteTexture();
+        context.FallbackMaterial = CreateDefaultModelMaterial(context.WhiteTexture);
 
         context.Materials.reserve(scene->mNumMaterials);
         if (scene->mNumMaterials == 0)
         {
-            context.Materials.push_back(CreateDefaultModelMaterial());
+            context.Materials.push_back(context.FallbackMaterial);
         }
         else
         {
@@ -366,17 +359,17 @@ void main()
                 const aiMaterial* material = scene->mMaterials[i];
                 if (!material)
                 {
-                    context.Materials.push_back(CreateDefaultModelMaterial());
+                    context.Materials.push_back(context.FallbackMaterial);
                     continue;
                 }
-                context.Materials.push_back(BuildMaterial(*material, *scene, context.Directory));
+                auto built = BuildMaterial(*material, *scene, context.Directory, context.WhiteTexture);
+                context.Materials.push_back(built ? built : context.FallbackMaterial);
             }
         }
 
         ProcessNode(*scene->mRootNode, *scene, context, glm::mat4(1.0f));
 
         model.m_Submeshes = std::move(context.Submeshes);
-        model.m_Materials = std::move(context.Materials);
 
         return model;
     }

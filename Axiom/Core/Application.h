@@ -17,6 +17,8 @@ namespace Axiom
     protected:
         virtual void OnUpdate() {}
         virtual void OnEvent(Event&) {}
+        Window& GetWindow();
+        const Window& GetWindow() const;
 
     private:
         void HandleEvent(Event& event);

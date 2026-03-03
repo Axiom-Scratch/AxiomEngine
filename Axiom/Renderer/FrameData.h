@@ -1,11 +1,11 @@
 #pragma once
 
-#include <glm/mat4x4.hpp>
+#include "Math/Math.h"
 
 namespace Axiom
 {
     struct FrameData
     {
-        glm::mat4 ViewProjection{1.0f};
+        Math::Mat4 ViewProjection = Math::Identity();
     };
 }

@@ -97,6 +97,7 @@ namespace Axiom
         virtual bool IsKeyPressedImpl(Key key) = 0;
         virtual bool IsMousePressedImpl(Mouse button) = 0;
         virtual std::pair<float, float> GetMousePositionImpl() = 0;
+        virtual std::pair<float, float> GetMouseDeltaImpl() = 0;
     };
 
     class Input
@@ -106,9 +107,15 @@ namespace Axiom
         static bool IsKeyPressed(Key key);
         static bool IsMousePressed(Mouse button);
         static std::pair<float, float> GetMousePosition();
+        static std::pair<float, float> GetMouseDelta();
+        static float GetMouseDeltaX();
+        static float GetMouseDeltaY();
 
     private:
         static PlatformInput& GetImpl();
         static std::unique_ptr<PlatformInput> s_PlatformInput;
+        static std::pair<float, float> s_MouseDeltaCache;
+        static uint8_t s_MouseDeltaAccessMask;
+        static bool s_MouseDeltaValid;
     };
 }

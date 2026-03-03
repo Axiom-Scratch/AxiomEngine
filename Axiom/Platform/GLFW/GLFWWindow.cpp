@@ -251,6 +251,11 @@ namespace Axiom
         return m_Data.Height;
     }
 
+    void* GLFWWindow::GetNativeHandle() const
+    {
+        return m_Window;
+    }
+
     void GLFWWindow::SetEventCallback(const EventCallbackFn& callback)
     {
         m_Data.EventCallback = callback;

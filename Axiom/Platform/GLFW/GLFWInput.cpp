@@ -126,4 +126,26 @@ namespace Axiom
         glfwGetCursorPos(m_Window, &x, &y);
         return { static_cast<float>(x), static_cast<float>(y) };
     }
+
+    std::pair<float, float> GLFWInput::GetMouseDeltaImpl()
+    {
+        double x = 0.0;
+        double y = 0.0;
+        glfwGetCursorPos(m_Window, &x, &y);
+
+        if (!m_HasLast)
+        {
+            m_LastX = x;
+            m_LastY = y;
+            m_HasLast = true;
+            return { 0.0f, 0.0f };
+        }
+
+        const float deltaX = static_cast<float>(x - m_LastX);
+        const float deltaY = static_cast<float>(y - m_LastY);
+
+        m_LastX = x;
+        m_LastY = y;
+        return { deltaX, deltaY };
+    }
 }

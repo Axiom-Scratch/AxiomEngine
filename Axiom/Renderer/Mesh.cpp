@@ -2,6 +2,7 @@
 
 #include "Renderer/RHI/RHIBuffer.h"
 #include "Renderer/RHI/RHIVertexArray.h"
+#include "Renderer/RenderCommand.h"
 
 #include <type_traits>
 
@@ -70,13 +71,9 @@ namespace Axiom
 
     Mesh::~Mesh() = default;
 
-    void Mesh::Bind() const
+    void Mesh::Draw() const
     {
         m_Data->VertexArray->Bind();
-    }
-
-    uint32_t Mesh::GetIndexCount() const
-    {
-        return m_Data->IndexCount;
+        RenderCommand::DrawIndexed(m_Data->IndexCount);
     }
 }

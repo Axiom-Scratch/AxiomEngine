@@ -18,6 +18,16 @@ namespace Axiom
 
     Application::~Application() = default;
 
+    Window& Application::GetWindow()
+    {
+        return *m_Window;
+    }
+
+    const Window& Application::GetWindow() const
+    {
+        return *m_Window;
+    }
+
     void Application::Run()
     {
         while (m_Running)

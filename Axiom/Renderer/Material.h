@@ -5,7 +5,6 @@
 
 #include <memory>
 #include <string>
-
 namespace Axiom
 {
     class Texture2D;
@@ -20,8 +19,7 @@ namespace Axiom
         void Bind() const;
         void SetMat4(const std::string& name, const glm::mat4& value);
         void SetVec4(const std::string& name, const glm::vec4& value);
-        void SetInt(const std::string& name, int value);
-        void SetAlbedoTexture(const std::shared_ptr<Texture2D>& texture);
+        void SetTexture(const std::string& name, const std::shared_ptr<Texture2D>& texture);
 
     private:
         struct MaterialData;

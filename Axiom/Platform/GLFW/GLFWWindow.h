@@ -15,6 +15,7 @@ namespace Axiom
         void OnUpdate() override;
         [[nodiscard]] uint32_t GetWidth() const override;
         [[nodiscard]] uint32_t GetHeight() const override;
+        [[nodiscard]] void* GetNativeHandle() const override;
         void SetEventCallback(const EventCallbackFn& callback) override;
 
     private:
